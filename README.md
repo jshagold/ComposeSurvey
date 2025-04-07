@@ -76,7 +76,13 @@ Jetpack Compose 기반 설문 응답 앱
     {
       "id": "language",
       "type": "single_choice",
-      "question": "자주 사용하는 언어는?",
+      "question": "현재 직종은?",
+      "options": ["학생", "구직자", "무직"]
+    },
+    {
+      "id": "language",
+      "type": "multiple_choice",
+      "question": "사용하는 언어는?",
       "options": ["Kotlin", "Java", "Python"]
     },
     {
@@ -85,6 +91,16 @@ Jetpack Compose 기반 설문 응답 앱
       "question": "경력 연차를 선택해주세요.",
       "min": 0,
       "max": 10
-    }
+    },
+    {
+      "id": "level",
+      "type": "likert_scale",
+      "question": "본인의 실력을 평가해 주세요.",
+      "0": "매우 못함",
+      "1": "못함",
+      "2": "보통",
+      "3": "잘함",
+      "4": "매우 잘함",
+    },
   ]
 }
