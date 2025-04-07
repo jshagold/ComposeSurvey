@@ -14,6 +14,35 @@ Jetpack Compose 기반 설문 응답 앱
 - ✅ ViewModel + StateFlow 기반 상태 관리 (MVVM 아키텍처)
 - ✅ 응답 상태 유지 및 결과 요약 기능
 
+
+        
+✅ **기능 요약**
+
+>1 설문 불러오기
+>* 로컬 JSON 파일(assets/)에서 설문 목록 불러오기
+>* Survey 객체로 파싱 (kotlinx.serialization 사용)
+>
+>2 설문 시작
+>* 각 설문 항목 클릭 시 질문 화면으로 이동
+>* 질문 타입에 따라 다른 UI 렌더링
+>
+>3 질문 타입 지원
+>* 단답형 (text)
+>* 객관식 단일 선택 (single_choice)
+>* 객관식 다중 선택 (multiple_choice)
+>* 슬라이더 (slider)
+>* (선택) 날짜 선택, 시간 선택, 척도 (Likert scale)
+>
+>4 응답 저장
+>* ViewModel에서 질문 ID → 응답값 형태로 상태 저장
+>* 화면 회전 시 응답값 유지 (rememberSaveable)
+>
+>5 제출 및 결과 요약
+>* 모든 질문에 답변을 완료하면 요약 화면으로 이동
+>* 사용자 응답 전체를 정리하여 보여줌
+        
+
+
 ---
 
 ## 🖥️ 스크린샷
