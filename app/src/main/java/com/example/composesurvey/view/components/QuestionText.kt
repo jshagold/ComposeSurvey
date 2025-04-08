@@ -1,5 +1,8 @@
 package com.example.composesurvey.view.components
 
+import android.R.attr.paddingHorizontal
+import android.R.attr.paddingVertical
+import android.R.attr.text
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,7 +47,6 @@ fun QuestionText(
     qNA: Pair<Question, Answer.Text>,
     onTextChange: (value: String) -> Unit = {},
 ) {
-
 
     ConstraintLayout(
         modifier = modifier
