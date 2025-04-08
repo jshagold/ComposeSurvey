@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ComposeSurvey</string>
+
+
+    <string name="main_survey_start">설문 시작</string>
+    <string name="main_survey_statistics">설문 통계</string>
+    <string name="main_recent_survey">최근 설문지</string>
+
+    <string name="list_title">설문지 목록</string>
 </resources>
