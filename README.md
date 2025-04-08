@@ -65,42 +65,43 @@ Jetpack Compose 기반 설문 응답 앱
 
 ```json
 {
-  "title": "개발자 설문조사",
+  "title": "Android 개발자 설문조사",
   "questions": [
     {
-      "id": "name",
-      "type": "text",
+      "id": "q1",
+      "type": "TEXT",
       "question": "당신의 이름은?",
       "required": true
     },
     {
-      "id": "language",
-      "type": "single_choice",
-      "question": "현재 직종은?",
-      "options": ["학생", "구직자", "무직"]
+      "id": "q2",
+      "type": "SINGLE_CHOICE",
+      "question": "가장 많이 사용하는 언어는 무엇인가요?",
+      "options": ["Kotlin", "Java", "C++", "Python"],
+      "required": true,
     },
     {
-      "id": "language",
-      "type": "multiple_choice",
-      "question": "사용하는 언어는?",
-      "options": ["Kotlin", "Java", "Python"]
+      "id": "q3",
+      "type": "MULTIPLE_CHOICE",
+      "question": "사용해본 Android 아키텍처 패턴을 모두 선택하세요.",
+      "options": ["MVVM", "MVI", "MVC", "Clean Architecture"]
     },
     {
-      "id": "experience",
-      "type": "slider",
+      "id": "q4",
+      "type": "SLIDER",
       "question": "경력 연차를 선택해주세요.",
       "min": 0,
       "max": 10
     },
     {
-      "id": "level",
-      "type": "likert_scale",
+      "id": "q5",
+      "type": "LIKERT_SCALE",
       "question": "본인의 실력을 평가해 주세요.",
-      "0": "매우 못함",
-      "1": "못함",
-      "2": "보통",
-      "3": "잘함",
-      "4": "매우 잘함",
+      "scale0": "매우 못함",
+      "scale1": "못함",
+      "scale2": "보통",
+      "scale3": "잘함",
+      "scale4": "매우 잘함",
     },
   ]
 }
