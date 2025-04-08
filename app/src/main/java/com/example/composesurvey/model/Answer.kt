@@ -1,5 +1,8 @@
 package com.example.composesurvey.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 sealed class Answer {
     data class Text(val value: String): Answer()
     data class SingleChoice(val selected: String): Answer()
