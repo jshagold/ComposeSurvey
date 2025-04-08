@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.jetbrainsKotlinKapt) apply false
     alias(libs.plugins.googleDaggerHiltAndroid) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 }

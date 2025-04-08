@@ -12,6 +12,9 @@ hiltVersion = "2.51.1"
 navComposeVersion = "2.8.9"
 hiltNavComposeVersion = "1.2.0"
 constraintLayoutComposeVersion = "1.1.1"
+jvmVersion = "2.1.20"
+kotlinSerializationVersion = "2.1.20"
+kotlinSerializationJsonVersion = "1.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,10 +44,14 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 # ConstraintLayout-Compose
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name="constraintlayout-compose", version.ref="constraintLayoutComposeVersion" }
 
+# Serialization
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerializationJsonVersion" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrainsKotlinKapt = { id="org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 googleDaggerHiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerializationVersion" }
 

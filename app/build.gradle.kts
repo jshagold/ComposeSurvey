@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.jetbrainsKotlinKapt)
     alias(libs.plugins.googleDaggerHiltAndroid)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -69,4 +70,7 @@ dependencies {
 
     // ConstraintLayout-Compose
     implementation(libs.androidx.constraintlayout.compose)
+
+    // JSON Kotlin Serialization
+    implementation(libs.kotlinx.serialization.json)
 }
