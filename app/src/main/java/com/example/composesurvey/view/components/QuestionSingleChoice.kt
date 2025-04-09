@@ -21,38 +21,32 @@ import com.example.composesurvey.model.QuestionType
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
 @Composable
-fun PreviewQuestionMultipleChoice() {
+fun PreviewQuestionSingleChoice() {
     val question = Question(
-        id = "q3",
-        type = QuestionType.MULTIPLE_CHOICE,
-        question = "사용해본 Android 아키텍처 패턴을 모두 선택하세요.",
-        options = listOf("MVVM", "MVI", "MVC", "Clean Architecture", "MVP")
+        id = "q2",
+        type = QuestionType.SINGLE_CHOICE,
+        question = "가장 많이 사용하는 언어는 무엇인가요?",
+        required = true,
+        options = listOf("Kotlin", "Java", "C++", "Python")
     )
 
-    val rem = remember { mutableStateOf(Pair(question, Answer.MultipleChoice(listOf("MVI", "MVP")))) }
+    val rem = remember { mutableStateOf(Pair(question, Answer.SingleChoice("Kotlin"))) }
 
-    QuestionMultipleChoice(
+    QuestionSingleChoice(
         index = 1,
         qNA = rem.value,
         onClickCheckBox = { key ->
-            val muList = rem.value.second.selected.toMutableList()
-            if(muList.contains(key)) {
-                muList.remove(key)
-            } else {
-                muList.add(key)
-            }
-
-            rem.value = Pair(question, Answer.MultipleChoice(muList))
+            rem.value = Pair(question, Answer.SingleChoice(key))
         }
     )
 }
 
 
 @Composable
-fun QuestionMultipleChoice(
+fun QuestionSingleChoice(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: Pair<Question, Answer.MultipleChoice>,
+    qNA: Pair<Question, Answer.SingleChoice>,
     onClickCheckBox: (key: String) -> Unit = {}
 ) {
     ConstraintLayout(
@@ -88,9 +82,9 @@ fun QuestionMultipleChoice(
                 }
         )
 
-        SelectBoxList(
+        RadioBtnBoxList(
             selectedList = qNA.first.options!!,
-            checkedList = qNA.second.selected,
+            checkedItem = qNA.second.selected,
             onClickCheckBox = onClickCheckBox,
             modifier = Modifier
                 .fillMaxWidth()

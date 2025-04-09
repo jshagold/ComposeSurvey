@@ -15,20 +15,20 @@ import androidx.compose.ui.unit.dp
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
 @Composable
-fun PreviewSelectBoxList() {
-    val list = listOf("MVVM", "MVI", "MVC", "Clean Architecture")
-    val ans = listOf("MVVM", "MVC")
-    SelectBoxList(
+fun PreviewRadioBtnBoxList() {
+    val list = listOf("Kotlin", "Java", "C++", "Python")
+    val ans = "Kotlin"
+    RadioBtnBoxList(
         selectedList = list,
-        checkedList = ans
+        checkedItem = ans
     )
 }
 
 
 @Composable
-fun SelectBoxList(
+fun RadioBtnBoxList(
     selectedList: List<String>,
-    checkedList: List<String>,
+    checkedItem: String,
     onClickCheckBox: (key: String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -45,7 +45,7 @@ fun SelectBoxList(
                 itemsIndexed(selectedList) { index, item ->
                     SelectBox(
                         text = item,
-                        value = checkedList.contains(item),
+                        value = checkedItem == item,
                         onClick = { onClickCheckBox(item) }
                     )
                 }
@@ -63,7 +63,7 @@ fun SelectBoxList(
                     }
                     SelectBox(
                         text = item,
-                        value = checkedList.contains(item),
+                        value = checkedItem == item,
                         onClick = { onClickCheckBox(item) }
                     )
                 }
