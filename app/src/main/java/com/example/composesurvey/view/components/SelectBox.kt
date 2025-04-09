@@ -2,6 +2,7 @@ package com.example.composesurvey.view.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,6 +29,7 @@ fun PreviewSelectBox() {
 fun SelectBox(
     text: String = "",
     value: Boolean = false,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     ConstraintLayout(
@@ -37,6 +39,9 @@ fun SelectBox(
 
         Box(
             modifier = Modifier
+                .clickable {
+                    onClick()
+                }
                 .size(30.dp)
                 .border(2.dp, Black)
                 .constrainAs(checkBox) {
