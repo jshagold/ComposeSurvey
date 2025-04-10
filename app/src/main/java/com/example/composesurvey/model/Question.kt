@@ -11,9 +11,5 @@ data class Question(
     val options: List<String>? = null, // single_choice, multiple_choice
     val min: Int? = null, // slider
     val max: Int? = null, // slider
-    val scale0: String? = null, // likert_scale
-    val scale1: String? = null, // likert_scale
-    val scale2: String? = null, // likert_scale
-    val scale3: String? = null, // likert_scale
-    val scale4: String? = null, // likert_scale
+    val scaleList: List<String>? = null, // likert_scale
 )
