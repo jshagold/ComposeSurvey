@@ -4,5 +4,6 @@ import com.example.composesurvey.model.Answer
 import com.example.composesurvey.model.Question
 
 data class SurveyCheckState(
-    val questionNAnswer: List<Pair<Question, Answer>> = listOf()
+    val surveyTitle: String = "",
+    val questionNAnswerList: List<Pair<Question, Answer>> = listOf(),
 )
