@@ -1,6 +1,8 @@
 package com.example.composesurvey.viewmodel
 
+import android.R.attr.text
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composesurvey.data.SurveyRepository
@@ -32,10 +34,7 @@ class SurveyViewModel @Inject constructor(
         }
     }
 
-
-
-
-    fun loadSurvey() {
+    private fun loadSurvey() {
         val survey = surveyRepository.getSurvey()
         val qNAList: List<Pair<Question, Answer>> = survey.questions.map { question ->
             when(question.type) {
@@ -57,10 +56,102 @@ class SurveyViewModel @Inject constructor(
             }
         }
 
+        Log.e("TAG", "loadSurvey: $qNAList", )
+
         _surveyCheckState.update {
             it.copy(
                 surveyTitle = survey.title,
                 questionNAnswerList = qNAList
+            )
+        }
+    }
+
+
+
+    fun questionTextChange(questionIndex: Int, text: String) {
+        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+            if(index == questionIndex) {
+                Pair(pair.first, Answer.Text(text))
+            } else {
+                pair
+            }
+        }
+
+        _surveyCheckState.update {
+            it.copy(
+                questionNAnswerList = list
+            )
+        }
+    }
+
+    fun questionSingleChoiceChange(questionIndex: Int, key: String) {
+        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+            if(index == questionIndex) {
+                Pair(pair.first, Answer.SingleChoice(key))
+            } else {
+                pair
+            }
+        }
+
+        _surveyCheckState.update {
+            it.copy(
+                questionNAnswerList = list
+            )
+        }
+    }
+
+    fun questionMultipleChoiceChange(questionIndex: Int, key: String) {
+        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+            if(index == questionIndex) {
+                val answer = pair.second as Answer.MultipleChoice
+                val muList = answer.selected.toMutableList()
+                if(muList.contains(key)) {
+                    muList.remove(key)
+                } else {
+                    muList.add(key)
+                }
+
+                Pair(pair.first, Answer.MultipleChoice(muList))
+            } else {
+                pair
+            }
+        }
+
+        _surveyCheckState.update {
+            it.copy(
+                questionNAnswerList = list
+            )
+        }
+    }
+
+    fun questionSliderChange(questionIndex: Int, value: Int) {
+        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+            if(index == questionIndex) {
+                Pair(pair.first, Answer.Slider(value))
+            } else {
+                pair
+            }
+        }
+
+        _surveyCheckState.update {
+            it.copy(
+                questionNAnswerList = list
+            )
+        }
+    }
+
+    fun questionLikertScaleChange(questionIndex: Int, value: Int) {
+        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+            if(index == questionIndex) {
+                Pair(pair.first, Answer.LikertScale(value))
+            } else {
+                pair
+            }
+        }
+
+        _surveyCheckState.update {
+            it.copy(
+                questionNAnswerList = list
             )
         }
     }

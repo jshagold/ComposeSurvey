@@ -33,7 +33,7 @@ class SurveyFileDataSourceImpl @Inject constructor(
                     id = "q3",
                     type = QuestionType.MULTIPLE_CHOICE,
                     question = "사용해본 Android 아키텍처 패턴을 모두 선택하세요.",
-                    options = listOf("MVVM", "MVI", "MVC", "Clean Architecture")
+                    options = listOf("MVVM", "MVI", "MVC", "Clean Architecture", "MVP")
                 ),
                 Question(
                     id = "q4",
