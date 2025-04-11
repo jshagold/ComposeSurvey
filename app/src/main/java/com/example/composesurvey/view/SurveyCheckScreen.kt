@@ -59,43 +59,43 @@ fun SurveyCheckScreen(
         )
 
         state.questionNAnswerList.forEachIndexed { index, qNA ->
-            when(qNA.first.type) {
-                QuestionType.TEXT -> {
+            when(val answer = qNA.second) {
+                is Answer.Text -> {
                     QuestionText(
                         index = index,
-                        qNA = state.questionNAnswerList[index] as Pair<Question, Answer.Text>,
+                        qNA = Pair(qNA.first, answer),
                         modifier = Modifier
                             .padding(10.dp)
                     )
                 }
-                QuestionType.SINGLE_CHOICE -> {
+                is Answer.SingleChoice -> {
                     QuestionSingleChoice(
                         index = index,
-                        qNA = state.questionNAnswerList[index] as Pair<Question, Answer.SingleChoice>,
+                        qNA = Pair(qNA.first, answer),
                         modifier = Modifier
                             .padding(10.dp)
                     )
                 }
-                QuestionType.MULTIPLE_CHOICE -> {
+                is Answer.MultipleChoice -> {
                     QuestionMultipleChoice(
                         index = index,
-                        qNA = state.questionNAnswerList[index] as Pair<Question, Answer.MultipleChoice>,
+                        qNA = Pair(qNA.first, answer),
                         modifier = Modifier
                             .padding(10.dp)
                     )
                 }
-                QuestionType.SLIDER -> {
+                is Answer.Slider -> {
                     QuestionSlider(
                         index = index,
-                        qNA = state.questionNAnswerList[index] as Pair<Question, Answer.Slider>,
+                        qNA = Pair(qNA.first, answer),
                         modifier = Modifier
                             .padding(10.dp)
                     )
                 }
-                QuestionType.LIKERT_SCALE -> {
+                is Answer.LikertScale -> {
                     QuestionLikertScale(
                         index = index,
-                        qNA = state.questionNAnswerList[index] as Pair<Question, Answer.LikertScale>,
+                        qNA = Pair(qNA.first, answer),
                         modifier = Modifier
                             .padding(10.dp)
                     )
