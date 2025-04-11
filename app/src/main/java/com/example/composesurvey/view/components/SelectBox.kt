@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 
 
@@ -36,6 +37,7 @@ fun SelectBox(
         modifier = modifier
     ) {
         val (checkBox, textLabel) = createRefs()
+        createHorizontalChain(checkBox, textLabel, chainStyle = ChainStyle.Packed)
 
         Box(
             modifier = Modifier
