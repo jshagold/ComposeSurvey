@@ -7,9 +7,16 @@ import javax.inject.Inject
 class SurveyRepositoryImpl @Inject constructor(
     val surveyFileDataSource: SurveyFileDataSource
 ) : SurveyRepository {
+    override fun getSurvey(fileName: String): Survey? {
+        return surveyFileDataSource.getSurvey(fileName)
+    }
+
+    override fun getSurveyTitleList(): List<String> {
+        return surveyFileDataSource.getSurveyTitleList()
+    }
 
     override fun getSurveyList(): List<Survey> {
-        return surveyFileDataSource.loadSurveyList()
+        return surveyFileDataSource.getSurveyList()
     }
 
     override fun exportSurveyResult(result: SurveyResult) {

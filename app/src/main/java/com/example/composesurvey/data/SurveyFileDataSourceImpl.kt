@@ -16,9 +16,61 @@ class SurveyFileDataSourceImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : SurveyFileDataSource {
 
+    private val assetFolder = "survey"
+
     @OptIn(ExperimentalSerializationApi::class)
-    override fun loadSurveyList(): List<Survey> {
-        val assetFoler = "survey"
+    override fun getSurvey(fileName: String): Survey? {
+        try {
+            val assetManager = context.resources.assets
+            val jsonFile = assetManager.open("$assetFolder/$fileName")
+            val survey = Json.decodeFromStream<Survey>(jsonFile)
+
+            return survey
+        } catch (e: IOException) {
+            throw FileException("파일 에러", e)
+        } catch (e: SerializationException) {
+            throw FileException("Json decode 에러", e)
+        } catch (e: IllegalArgumentException) {
+            throw FileException("Json decode 에러", e)
+        } catch (e: Exception) {
+            throw UnexpectedException("원인 불명", e)
+        }
+
+        return null
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    override fun getSurveyTitleList(): List<String> {
+        val titleList = mutableListOf<String>()
+
+        try {
+            val assetManager = context.resources.assets
+            val fileList = assetManager.list("survey")
+
+            fileList?.let {
+                it.forEach {
+                    val fileStream = assetManager.open("$assetFolder/$it")
+                    val jsonFile = Json.decodeFromStream<Survey>(fileStream)
+
+                    titleList.add(jsonFile.title)
+                }
+            }
+        } catch (e: IOException) {
+            throw FileException("파일 에러", e)
+        } catch (e: SerializationException) {
+            throw FileException("Json decode 에러", e)
+        } catch (e: IllegalArgumentException) {
+            throw FileException("Json decode 에러", e)
+        } catch (e: Exception) {
+            throw UnexpectedException("원인 불명", e)
+        }
+
+        return titleList
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    override fun getSurveyList(): List<Survey> {
+        val assetFolder = "survey"
 
         val surveyList = mutableListOf<Survey>()
 
@@ -29,7 +81,7 @@ class SurveyFileDataSourceImpl @Inject constructor(
 
             fileList?.let {
                 it.forEach {
-                    val fileStream = assetManager.open("$assetFoler/$it")
+                    val fileStream = assetManager.open("$assetFolder/$it")
                     surveyList.add(Json.decodeFromStream<Survey>(fileStream))
                 }
             }
