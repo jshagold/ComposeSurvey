@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.composesurvey.view.MainRoute
 import com.example.composesurvey.view.SurveyCheckRoute
-import com.example.composesurvey.view.SurveyListScreen
+import com.example.composesurvey.view.SurveyListRoute
 
 
 @Composable
@@ -29,14 +29,14 @@ fun MainNavHost(
 
         composable(route = Route.MAIN) {
             MainRoute(
-                navigateToSurveyCheck = {
-                    navController.navigateToSurveyCheck()
+                navigateToSurveyList = {
+                    navController.navigateToSurveyList()
                 }
             )
         }
 
         composable(route = Route.LIST) {
-            SurveyListScreen()
+            SurveyListRoute()
         }
 
         composable(route = Route.CHECK) {
