@@ -1,58 +1,54 @@
 package com.example.composesurvey.data
 
 import android.content.Context
-import com.example.composesurvey.model.Question
-import com.example.composesurvey.model.QuestionType
+import com.example.composesurvey.data.exception.FileException
+import com.example.composesurvey.data.exception.UnexpectedException
 import com.example.composesurvey.model.Survey
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import java.io.IOException
 import javax.inject.Inject
 
 class SurveyFileDataSourceImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : SurveyFileDataSource {
 
-    // todo
-    override fun loadSurvey(): Survey {
-        return Survey(
-            title = "Android 개발자 설문조사",
-            questions = listOf(
-                Question(
-                    id = "q1",
-                    type = QuestionType.TEXT,
-                    question = "당신의 이름은?",
-                    required = true
-                ),
-                Question(
-                    id = "q2",
-                    type = QuestionType.SINGLE_CHOICE,
-                    question = "가장 많이 사용하는 언어는 무엇인가요?",
-                    required = true,
-                    options = listOf("Kotlin", "Java", "C++", "Python")
-                ),
-                Question(
-                    id = "q3",
-                    type = QuestionType.MULTIPLE_CHOICE,
-                    question = "사용해본 Android 아키텍처 패턴을 모두 선택하세요.",
-                    options = listOf("MVVM", "MVI", "MVC", "Clean Architecture", "MVP")
-                ),
-                Question(
-                    id = "q4",
-                    type = QuestionType.SLIDER,
-                    question = "경력 연차를 선택해주세요.",
-                    min = 0,
-                    max = 10
-                ),
-                Question(
-                    id = "q5",
-                    type = QuestionType.LIKERT_SCALE,
-                    question = "본인의 실력을 평가해 주세요.",
-                    scaleList = listOf("매우 못함", "못함", "보통", "잘함", "매우 잘함"),
-                ),
-            )
-        )
+    @OptIn(ExperimentalSerializationApi::class)
+    override fun loadSurveyList(): List<Survey> {
+        val assetFoler = "survey"
 
+        val surveyList = mutableListOf<Survey>()
 
+        try {
+            val assetManager = context.resources.assets
+
+            val fileList = assetManager.list("survey")
+
+            fileList?.let {
+                it.forEach {
+                    val fileStream = assetManager.open("$assetFoler/$it")
+                    surveyList.add(Json.decodeFromStream<Survey>(fileStream))
+                }
+            }
+
+        } catch (e: IOException) {
+            throw FileException("파일 에러", e)
+        } catch (e: SerializationException) {
+            throw FileException("Json decode 에러", e)
+        } catch (e: IllegalArgumentException) {
+            throw FileException("Json decode 에러", e)
+        } catch (e: Exception) {
+            throw UnexpectedException("원인 불명", e)
+        }
+
+        return surveyList
     }
-
-
 }
+
+
+
+
+
