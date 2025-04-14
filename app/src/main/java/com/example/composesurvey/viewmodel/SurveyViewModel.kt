@@ -6,9 +6,12 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composesurvey.data.SurveyRepository
+import com.example.composesurvey.data.exception.FileException
+import com.example.composesurvey.data.exception.UnexpectedException
 import com.example.composesurvey.model.Answer
 import com.example.composesurvey.model.Question
 import com.example.composesurvey.model.QuestionType
+import com.example.composesurvey.model.Survey
 import com.example.composesurvey.view.state.SurveyCheckState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,34 +38,49 @@ class SurveyViewModel @Inject constructor(
     }
 
     private fun loadSurvey() {
-        val survey = surveyRepository.getSurvey()
-        val qNAList: List<Pair<Question, Answer>> = survey.questions.map { question ->
-            when(question.type) {
-                QuestionType.TEXT -> {
-                    Pair(question, Answer.Text(""))
-                }
-                QuestionType.SINGLE_CHOICE -> {
-                    Pair(question, Answer.SingleChoice(""))
-                }
-                QuestionType.MULTIPLE_CHOICE -> {
-                    Pair(question, Answer.MultipleChoice(listOf()))
-                }
-                QuestionType.SLIDER -> {
-                    Pair(question, Answer.Slider(0))
-                }
-                QuestionType.LIKERT_SCALE -> {
-                    Pair(question, Answer.LikertScale(0))
-                }
-            }
+
+        val surveyList: List<Survey> = try {
+            surveyRepository.getSurveyList()
+        } catch (e: FileException) {
+            Log.e("TAG", "loadSurvey: $e", )
+            listOf()
+        } catch (e: UnexpectedException) {
+            Log.e("TAG", "loadSurvey: $e", )
+            listOf()
         }
 
-        Log.e("TAG", "loadSurvey: $qNAList", )
 
-        _surveyCheckState.update {
-            it.copy(
-                surveyTitle = survey.title,
-                questionNAnswerList = qNAList
-            )
+        if(surveyList.isNotEmpty()) {
+            val qNAList: List<Pair<Question, Answer>> = surveyList[0].questions.map { question ->
+                when(question.type) {
+                    QuestionType.TEXT -> {
+                        Pair(question, Answer.Text(""))
+                    }
+                    QuestionType.SINGLE_CHOICE -> {
+                        Pair(question, Answer.SingleChoice(""))
+                    }
+                    QuestionType.MULTIPLE_CHOICE -> {
+                        Pair(question, Answer.MultipleChoice(listOf()))
+                    }
+                    QuestionType.SLIDER -> {
+                        Pair(question, Answer.Slider(0))
+                    }
+                    QuestionType.LIKERT_SCALE -> {
+                        Pair(question, Answer.LikertScale(0))
+                    }
+                }
+            }
+
+            Log.e("TAG", "loadSurvey: $qNAList", )
+
+            _surveyCheckState.update {
+                it.copy(
+                    surveyTitle = surveyList[0].title,
+                    questionNAnswerList = qNAList
+                )
+            }
+        } else {
+            Log.e("TAG", "loadSurvey: Empty Survey", )
         }
     }
 
