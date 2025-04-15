@@ -1,11 +1,14 @@
 package com.example.composesurvey.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.composesurvey.common.result.Result
 import com.example.composesurvey.data.SurveyRepository
 import com.example.composesurvey.data.exception.FileException
 import com.example.composesurvey.data.exception.UnexpectedException
+import com.example.composesurvey.model.SurveyPreview
 import com.example.composesurvey.view.error.ErrorCode
 import com.example.composesurvey.view.state.SurveyListState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,19 +29,22 @@ class SurveyListViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val titleList: List<String> = surveyRepository.getSurveyTitleList()
+                val resultSurveyList: List<Result<SurveyPreview>> = surveyRepository.getSurveyTitleList()
+
                 _surveyListState.update {
                     it.copy(
-                        titleList = titleList
+                        titleList = resultSurveyList
                     )
                 }
             } catch (e: FileException) {
+                Log.e("TAG", "init: ${e.printStackTrace()}", )
                 _surveyListState.update {
                     it.copy(
                         errorCode = ErrorCode.FILE
                     )
                 }
             } catch (e: UnexpectedException) {
+                Log.e("TAG", "init: ${e.printStackTrace()}", )
                 _surveyListState.update {
                     it.copy(
                         errorCode = ErrorCode.UNEXPECTED
