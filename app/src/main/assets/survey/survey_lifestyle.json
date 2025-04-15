@@ -26,7 +26,7 @@
       "id": "stress",
       "type": "LIKERT_SCALE",
       "question": "최근 스트레스 수준을 평가해주세요.",
-      "options": ["매우 낮음", "낮음", "보통", "높음", "매우 높음"]
+      "scaleList": ["매우 낮음", "낮음", "보통", "높음", "매우 높음"]
     },
     {
       "id": "feedback",
