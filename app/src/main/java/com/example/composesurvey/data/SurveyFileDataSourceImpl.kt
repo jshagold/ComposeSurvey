@@ -1,9 +1,12 @@
 package com.example.composesurvey.data
 
 import android.content.Context
+import android.util.Log.e
+import com.example.composesurvey.common.result.Result
 import com.example.composesurvey.data.exception.FileException
 import com.example.composesurvey.data.exception.UnexpectedException
 import com.example.composesurvey.model.Survey
+import com.example.composesurvey.model.SurveyPreview
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -19,7 +22,7 @@ class SurveyFileDataSourceImpl @Inject constructor(
     private val assetFolder = "survey"
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun getSurvey(fileName: String): Survey? {
+    override fun getSurvey(fileName: String): Survey {
         try {
             val assetManager = context.resources.assets
             val jsonFile = assetManager.open("$assetFolder/$fileName")
@@ -35,37 +38,46 @@ class SurveyFileDataSourceImpl @Inject constructor(
         } catch (e: Exception) {
             throw UnexpectedException("원인 불명", e)
         }
-
-        return null
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun getSurveyTitleList(): List<String> {
-        val titleList = mutableListOf<String>()
-
+    override fun getSurveyTitleList(): List<Result<SurveyPreview>> {
         try {
             val assetManager = context.resources.assets
-            val fileList = assetManager.list("survey")
+            val fileList = assetManager.list("survey") ?: return emptyList()
 
-            fileList?.let {
-                it.forEach {
-                    val fileStream = assetManager.open("$assetFolder/$it")
+            return fileList.map { fileName ->
+                try {
+                    val fileStream = assetManager.open("$assetFolder/$fileName")
                     val jsonFile = Json.decodeFromStream<Survey>(fileStream)
-
-                    titleList.add(jsonFile.title)
+                    Result.Success(SurveyPreview(title = jsonFile.title, fileName = fileName))
+                } catch (e: IOException) {
+                    Result.Failure(
+                        message = "fileName = $fileName",
+                        cause = FileException("파일 에러", e)
+                    )
+                } catch (e: SerializationException) {
+                    Result.Failure(
+                        message = "fileName = $fileName",
+                        cause = FileException("Json decode 에러", e)
+                    )
+                } catch (e: IllegalArgumentException) {
+                    Result.Failure(
+                        message = "fileName = $fileName",
+                        cause = FileException("Json decode 에러", e)
+                    )
+                } catch (e: Exception) {
+                    Result.Failure(
+                        message = "fileName = $fileName",
+                        cause = UnexpectedException("Error", e)
+                    )
                 }
             }
         } catch (e: IOException) {
             throw FileException("파일 에러", e)
-        } catch (e: SerializationException) {
-            throw FileException("Json decode 에러", e)
-        } catch (e: IllegalArgumentException) {
-            throw FileException("Json decode 에러", e)
         } catch (e: Exception) {
-            throw UnexpectedException("원인 불명", e)
+            throw UnexpectedException("Error", e)
         }
-
-        return titleList
     }
 
     @OptIn(ExperimentalSerializationApi::class)

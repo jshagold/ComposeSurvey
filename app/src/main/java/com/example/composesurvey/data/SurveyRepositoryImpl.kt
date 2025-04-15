@@ -1,17 +1,19 @@
 package com.example.composesurvey.data
 
+import com.example.composesurvey.common.result.Result
 import com.example.composesurvey.model.Survey
+import com.example.composesurvey.model.SurveyPreview
 import com.example.composesurvey.model.SurveyResult
 import javax.inject.Inject
 
 class SurveyRepositoryImpl @Inject constructor(
     val surveyFileDataSource: SurveyFileDataSource
 ) : SurveyRepository {
-    override fun getSurvey(fileName: String): Survey? {
+    override fun getSurvey(fileName: String): Survey {
         return surveyFileDataSource.getSurvey(fileName)
     }
 
-    override fun getSurveyTitleList(): List<String> {
+    override fun getSurveyTitleList(): List<Result<SurveyPreview>> {
         return surveyFileDataSource.getSurveyTitleList()
     }
 
