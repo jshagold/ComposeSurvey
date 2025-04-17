@@ -43,7 +43,8 @@ fun PreviewQuestionSlider() {
 
     QuestionSlider(
         index = 2,
-        qNA = rem.value,
+        question = rem.value.question,
+        answer = rem.value.answer as AnswerUI.Slider,
         onValueChange = { value ->
             rem.value = QuestionAndAnswerUI(
                 question,
@@ -59,7 +60,8 @@ fun PreviewQuestionSlider() {
 fun QuestionSlider(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: QuestionAndAnswerUI,
+    question: QuestionUI,
+    answer: AnswerUI.Slider,
     onValueChange: (value: Int) -> Unit = {}
 ) {
     ConstraintLayout(
@@ -83,7 +85,7 @@ fun QuestionSlider(
         )
 
         Text(
-            text = qNA.question.question,
+            text = question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -96,15 +98,15 @@ fun QuestionSlider(
         )
 
         Slider(
-            value = (qNA.answer as AnswerUI.Slider).value.toFloat(),
+            value = answer.value.toFloat(),
             onValueChange = {
                 onValueChange(round(it).toInt())
             },
-            steps = (qNA.question.max!! - qNA.question.min!!) - 1,
-            valueRange = qNA.question.min!!.toFloat()..qNA.question.max!!.toFloat(),
+            steps = (question.max!! - question.min!!) - 1,
+            valueRange = question.min.toFloat()..question.max.toFloat(),
             thumb = {
                 Text(
-                    text = "${qNA.answer.value}년",
+                    text = "${answer.value}년",
                     modifier = Modifier
                         .border(1.dp, Black, RoundedCornerShape(2.dp))
                         .padding(2.dp)

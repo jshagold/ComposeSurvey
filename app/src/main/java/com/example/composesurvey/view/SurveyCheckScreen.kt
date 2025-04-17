@@ -77,7 +77,8 @@ fun SurveyCheckScreen(
                 is AnswerUI.Text -> {
                     QuestionText(
                         index = index,
-                        qNA = qNA,
+                        question = qNA.question,
+                        answer = qNA.answer,
                         onTextChange = { questionTextChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)
@@ -87,7 +88,8 @@ fun SurveyCheckScreen(
                 is AnswerUI.SingleChoice -> {
                     QuestionSingleChoice(
                         index = index,
-                        qNA = qNA,
+                        question = qNA.question,
+                        answer = qNA.answer,
                         onClickCheckBox = { questionSingleChoiceChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)
@@ -97,7 +99,8 @@ fun SurveyCheckScreen(
                 is AnswerUI.MultipleChoice -> {
                     QuestionMultipleChoice(
                         index = index,
-                        qNA = qNA,
+                        question = qNA.question,
+                        answer = qNA.answer,
                         onClickCheckBox = { questionMultipleChoiceChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)
@@ -107,7 +110,8 @@ fun SurveyCheckScreen(
                 is AnswerUI.Slider -> {
                     QuestionSlider(
                         index = index,
-                        qNA = qNA,
+                        question = qNA.question,
+                        answer = qNA.answer,
                         onValueChange = { questionSliderChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)
@@ -117,7 +121,8 @@ fun SurveyCheckScreen(
                 is AnswerUI.LikertScale -> {
                     QuestionLikertScale(
                         index = index,
-                        qNA = qNA,
+                        question = qNA.question,
+                        answer = qNA.answer,
                         onValueChange = { questionLikertScaleChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)

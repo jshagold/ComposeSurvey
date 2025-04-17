@@ -39,7 +39,8 @@ fun PreviewQuestionMultipleChoice() {
 
     QuestionMultipleChoice(
         index = 1,
-        qNA = rem.value,
+        question = rem.value.question,
+        answer = rem.value.answer as AnswerUI.MultipleChoice,
         onClickCheckBox = { key ->
             val muList = (rem.value.answer as AnswerUI.MultipleChoice).selected.toMutableList()
             if(muList.contains(key)) {
@@ -61,7 +62,8 @@ fun PreviewQuestionMultipleChoice() {
 fun QuestionMultipleChoice(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: QuestionAndAnswerUI,
+    question: QuestionUI,
+    answer: AnswerUI.MultipleChoice,
     onClickCheckBox: (key: String) -> Unit = {}
 ) {
     ConstraintLayout(
@@ -85,7 +87,7 @@ fun QuestionMultipleChoice(
         )
 
         Text(
-            text = qNA.question.question,
+            text = question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -98,8 +100,8 @@ fun QuestionMultipleChoice(
         )
 
         SelectBoxList(
-            selectedList = qNA.question.options!!,
-            checkedList = (qNA.answer as AnswerUI.MultipleChoice).selected,
+            selectedList = question.options!!,
+            checkedList = answer.selected,
             onClickCheckBox = onClickCheckBox,
             modifier = Modifier
                 .fillMaxWidth()

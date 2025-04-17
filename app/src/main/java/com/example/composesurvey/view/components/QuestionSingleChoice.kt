@@ -42,7 +42,8 @@ fun PreviewQuestionSingleChoice() {
 
     QuestionSingleChoice(
         index = 1,
-        qNA = rem.value,
+        question = rem.value.question,
+        answer = rem.value.answer as AnswerUI.SingleChoice,
         onClickCheckBox = { key ->
             rem.value = QuestionAndAnswerUI(
                 question = question,
@@ -57,7 +58,8 @@ fun PreviewQuestionSingleChoice() {
 fun QuestionSingleChoice(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: QuestionAndAnswerUI,
+    question: QuestionUI,
+    answer: AnswerUI.SingleChoice,
     onClickCheckBox: (key: String) -> Unit = {}
 ) {
     ConstraintLayout(
@@ -81,7 +83,7 @@ fun QuestionSingleChoice(
         )
 
         Text(
-            text = qNA.question.question,
+            text = question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -94,8 +96,8 @@ fun QuestionSingleChoice(
         )
 
         RadioBtnBoxList(
-            selectedList = qNA.question.options!!,
-            checkedItem = (qNA.answer as AnswerUI.SingleChoice).selected,
+            selectedList = question.options!!,
+            checkedItem = answer.selected,
             onClickCheckBox = onClickCheckBox,
             modifier = Modifier
                 .fillMaxWidth()

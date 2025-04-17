@@ -31,9 +31,8 @@ fun PreviewQuestionText() {
 
     QuestionText(
         index = 0,
-        qNA = QuestionAndAnswerUI(
-            question, AnswerUI.Text("")
-        ),
+        question = question,
+        answer = AnswerUI.Text("")
     )
 }
 
@@ -42,7 +41,8 @@ fun PreviewQuestionText() {
 fun QuestionText(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: QuestionAndAnswerUI,
+    question: QuestionUI,
+    answer: AnswerUI.Text,
     onTextChange: (value: String) -> Unit = {},
 ) {
 
@@ -66,7 +66,7 @@ fun QuestionText(
         )
 
         Text(
-            text = qNA.question.question,
+            text = question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -79,7 +79,7 @@ fun QuestionText(
         )
 
         EditText(
-            inputText = (qNA.answer as Answer.Text).value,
+            inputText = answer.value,
             onValueChange = onTextChange,
             placeholder = "...",
             borderSize = 1.dp,

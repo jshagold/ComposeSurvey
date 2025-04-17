@@ -38,7 +38,8 @@ fun PreviewQuestionLikertScale() {
 
     QuestionLikertScale(
         index = 2,
-        qNA = rem.value,
+        question = rem.value.question,
+        answer = rem.value.answer as AnswerUI.LikertScale,
         onValueChange = { value ->
             rem.value = QuestionAndAnswerUI(
                 question,
@@ -52,7 +53,8 @@ fun PreviewQuestionLikertScale() {
 fun QuestionLikertScale(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: QuestionAndAnswerUI,
+    question: QuestionUI,
+    answer: AnswerUI.LikertScale,
     onValueChange: (value: Int) -> Unit = {}
 ) {
     ConstraintLayout(
@@ -75,7 +77,7 @@ fun QuestionLikertScale(
         )
 
         Text(
-            text = qNA.question.question,
+            text = question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -88,8 +90,8 @@ fun QuestionLikertScale(
         )
 
         LikertScaleComponent(
-            scaleList = qNA.question.scaleList!!,
-            selectedIndex = (qNA.answer as AnswerUI.LikertScale).selected,
+            scaleList = question.scaleList!!,
+            selectedIndex = answer.selected,
             onClickValue = onValueChange,
             modifier = Modifier
                 .padding(top = 5.dp)
