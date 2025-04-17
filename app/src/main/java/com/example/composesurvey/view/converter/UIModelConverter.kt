@@ -36,3 +36,33 @@ fun QuestionAndAnswer.toQuestionAndAnswerUI(): QuestionAndAnswerUI {
         answer = this.answer.toAnswerUI()
     )
 }
+
+fun QuestionUI.toQuestion(): Question {
+    return Question(
+        id = this.id,
+        question = this.question,
+        type = this.type,
+        required = this.required,
+        options = this.options,
+        min = this.min,
+        max = this.max,
+        scaleList = this.scaleList
+    )
+}
+
+fun AnswerUI.toAnswer(): Answer {
+    return when (val answer = this) {
+        is AnswerUI.LikertScale -> Answer.LikertScale(answer.selected)
+        is AnswerUI.MultipleChoice -> Answer.MultipleChoice(answer.selected)
+        is AnswerUI.SingleChoice -> Answer.SingleChoice(answer.selected)
+        is AnswerUI.Slider -> Answer.Slider(answer.value)
+        is AnswerUI.Text -> Answer.Text(answer.value)
+    }
+}
+
+fun QuestionAndAnswerUI.toQuestionAndAnswer(): QuestionAndAnswer {
+    return QuestionAndAnswer(
+        question = this.question.toQuestion(),
+        answer = this.answer.toAnswer()
+    )
+}

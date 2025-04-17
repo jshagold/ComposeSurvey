@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.composesurvey.data.model.Answer
 import com.example.composesurvey.view.components.QuestionLikertScale
 import com.example.composesurvey.view.components.QuestionMultipleChoice
 import com.example.composesurvey.view.components.QuestionSingleChoice

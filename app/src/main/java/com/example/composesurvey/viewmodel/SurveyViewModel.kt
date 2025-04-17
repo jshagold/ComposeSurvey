@@ -12,6 +12,7 @@ import com.example.composesurvey.data.model.Answer
 import com.example.composesurvey.data.model.QuestionAndAnswer
 import com.example.composesurvey.data.model.QuestionType
 import com.example.composesurvey.data.model.Survey
+import com.example.composesurvey.view.converter.toQuestionAndAnswer
 import com.example.composesurvey.view.converter.toQuestionUI
 import com.example.composesurvey.view.error.ErrorCode
 import com.example.composesurvey.view.model.AnswerUI
@@ -120,8 +121,7 @@ class SurveyViewModel @Inject constructor(
     fun questionTextChange(questionIndex: Int, text: String) {
         val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                QuestionAndAnswerUI(
-                    question = qNA.question,
+                qNA.copy(
                     answer = AnswerUI.Text(text)
                 )
             } else {
@@ -139,8 +139,7 @@ class SurveyViewModel @Inject constructor(
     fun questionSingleChoiceChange(questionIndex: Int, key: String) {
         val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                QuestionAndAnswerUI(
-                    question = qNA.question,
+                qNA.copy(
                     answer = AnswerUI.SingleChoice(key)
                 )
             } else {
@@ -158,7 +157,7 @@ class SurveyViewModel @Inject constructor(
     fun questionMultipleChoiceChange(questionIndex: Int, key: String) {
         val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                val answer = qNA.answer as Answer.MultipleChoice
+                val answer = qNA.answer as AnswerUI.MultipleChoice
                 val muList = answer.selected.toMutableList()
                 if (muList.contains(key)) {
                     muList.remove(key)
@@ -166,8 +165,7 @@ class SurveyViewModel @Inject constructor(
                     muList.add(key)
                 }
 
-                QuestionAndAnswerUI(
-                    question = qNA.question,
+                qNA.copy(
                     answer = AnswerUI.MultipleChoice(muList)
                 )
             } else {
@@ -185,8 +183,7 @@ class SurveyViewModel @Inject constructor(
     fun questionSliderChange(questionIndex: Int, value: Int) {
         val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                QuestionAndAnswerUI(
-                    question = qNA.question,
+                qNA.copy(
                     answer = AnswerUI.Slider(value)
                 )
             } else {
@@ -204,8 +201,7 @@ class SurveyViewModel @Inject constructor(
     fun questionLikertScaleChange(questionIndex: Int, value: Int) {
         val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                QuestionAndAnswerUI(
-                    question = qNA.question,
+                qNA.copy(
                     answer = AnswerUI.LikertScale(value)
                 )
             } else {
@@ -222,7 +218,9 @@ class SurveyViewModel @Inject constructor(
 
 
     fun saveSurveyResult() {
-        val value = surveyCheckState.value.questionNAnswerList
+        val value: List<QuestionAndAnswer> = surveyCheckState.value.questionNAnswerList.map { qnaUI ->
+            qnaUI.toQuestionAndAnswer()
+        }
         val jsonValue = Json.encodeToString(value)
 
         e("TAG", "saveSurveyResult: $jsonValue", )
