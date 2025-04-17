@@ -14,15 +14,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.composesurvey.model.Answer
-import com.example.composesurvey.model.Question
-import com.example.composesurvey.model.QuestionType
+import com.example.composesurvey.data.model.Answer
+import com.example.composesurvey.data.model.Question
+import com.example.composesurvey.data.model.QuestionType
+import com.example.composesurvey.view.model.AnswerUI
+import com.example.composesurvey.view.model.QuestionAndAnswerUI
+import com.example.composesurvey.view.model.QuestionUI
 
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
 @Composable
 fun PreviewQuestionSingleChoice() {
-    val question = Question(
+    val question = QuestionUI(
         id = "q2",
         type = QuestionType.SINGLE_CHOICE,
         question = "가장 많이 사용하는 언어는 무엇인가요?",
@@ -30,13 +33,21 @@ fun PreviewQuestionSingleChoice() {
         options = listOf("Kotlin", "Java", "C++", "Python")
     )
 
-    val rem = remember { mutableStateOf(Pair(question, Answer.SingleChoice("Kotlin"))) }
+    val qna = QuestionAndAnswerUI(
+        question = question,
+        answer = AnswerUI.SingleChoice("Kotlin")
+    )
+
+    val rem = remember { mutableStateOf(qna) }
 
     QuestionSingleChoice(
         index = 1,
         qNA = rem.value,
         onClickCheckBox = { key ->
-            rem.value = Pair(question, Answer.SingleChoice(key))
+            rem.value = QuestionAndAnswerUI(
+                question = question,
+                answer = AnswerUI.SingleChoice(key)
+            )
         }
     )
 }
@@ -46,7 +57,7 @@ fun PreviewQuestionSingleChoice() {
 fun QuestionSingleChoice(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: Pair<Question, Answer.SingleChoice>,
+    qNA: QuestionAndAnswerUI,
     onClickCheckBox: (key: String) -> Unit = {}
 ) {
     ConstraintLayout(
@@ -70,7 +81,7 @@ fun QuestionSingleChoice(
         )
 
         Text(
-            text = qNA.first.question,
+            text = qNA.question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -83,8 +94,8 @@ fun QuestionSingleChoice(
         )
 
         RadioBtnBoxList(
-            selectedList = qNA.first.options!!,
-            checkedItem = qNA.second.selected,
+            selectedList = qNA.question.options!!,
+            checkedItem = (qNA.answer as AnswerUI.SingleChoice).selected,
             onClickCheckBox = onClickCheckBox,
             modifier = Modifier
                 .fillMaxWidth()

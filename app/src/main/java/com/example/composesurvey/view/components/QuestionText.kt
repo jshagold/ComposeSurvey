@@ -1,32 +1,28 @@
 package com.example.composesurvey.view.components
 
-import android.R.attr.paddingHorizontal
-import android.R.attr.paddingVertical
-import android.R.attr.text
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.composesurvey.model.Answer
-import com.example.composesurvey.model.Question
-import com.example.composesurvey.model.QuestionType
+import com.example.composesurvey.data.model.Answer
+import com.example.composesurvey.data.model.QuestionType
+import com.example.composesurvey.view.model.AnswerUI
+import com.example.composesurvey.view.model.QuestionAndAnswerUI
+import com.example.composesurvey.view.model.QuestionUI
 
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
 @Composable
 fun PreviewQuestionText() {
-    val question = Question(
+    val question = QuestionUI(
         id = "q1",
         type = QuestionType.TEXT,
         question = "당신의 이름은?",
@@ -35,7 +31,9 @@ fun PreviewQuestionText() {
 
     QuestionText(
         index = 0,
-        qNA = Pair(question, Answer.Text("")),
+        qNA = QuestionAndAnswerUI(
+            question, AnswerUI.Text("")
+        ),
     )
 }
 
@@ -44,7 +42,7 @@ fun PreviewQuestionText() {
 fun QuestionText(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: Pair<Question, Answer.Text>,
+    qNA: QuestionAndAnswerUI,
     onTextChange: (value: String) -> Unit = {},
 ) {
 
@@ -68,7 +66,7 @@ fun QuestionText(
         )
 
         Text(
-            text = qNA.first.question,
+            text = qNA.question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -81,7 +79,7 @@ fun QuestionText(
         )
 
         EditText(
-            inputText = qNA.second.value,
+            inputText = (qNA.answer as Answer.Text).value,
             onValueChange = onTextChange,
             placeholder = "...",
             borderSize = 1.dp,

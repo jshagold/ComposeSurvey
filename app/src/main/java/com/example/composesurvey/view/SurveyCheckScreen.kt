@@ -20,12 +20,13 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.composesurvey.model.Answer
+import com.example.composesurvey.data.model.Answer
 import com.example.composesurvey.view.components.QuestionLikertScale
 import com.example.composesurvey.view.components.QuestionMultipleChoice
 import com.example.composesurvey.view.components.QuestionSingleChoice
 import com.example.composesurvey.view.components.QuestionSlider
 import com.example.composesurvey.view.components.QuestionText
+import com.example.composesurvey.view.model.AnswerUI
 import com.example.composesurvey.view.state.SurveyCheckState
 import com.example.composesurvey.viewmodel.SurveyViewModel
 
@@ -43,6 +44,7 @@ fun SurveyCheckRoute(
         questionMultipleChoiceChange = viewModel::questionMultipleChoiceChange,
         questionSliderChange = viewModel::questionSliderChange,
         questionLikertScaleChange = viewModel::questionLikertScaleChange,
+        saveResult = viewModel::saveSurveyResult
     )
 }
 
@@ -71,51 +73,51 @@ fun SurveyCheckScreen(
         )
 
         state.questionNAnswerList.forEachIndexed { index, qNA ->
-            when (val answer = qNA.second) {
-                is Answer.Text -> {
+            when (qNA.answer) {
+                is AnswerUI.Text -> {
                     QuestionText(
                         index = index,
-                        qNA = Pair(qNA.first, answer),
+                        qNA = qNA,
                         onTextChange = { questionTextChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)
                     )
                 }
 
-                is Answer.SingleChoice -> {
+                is AnswerUI.SingleChoice -> {
                     QuestionSingleChoice(
                         index = index,
-                        qNA = Pair(qNA.first, answer),
+                        qNA = qNA,
                         onClickCheckBox = { questionSingleChoiceChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)
                     )
                 }
 
-                is Answer.MultipleChoice -> {
+                is AnswerUI.MultipleChoice -> {
                     QuestionMultipleChoice(
                         index = index,
-                        qNA = Pair(qNA.first, answer),
+                        qNA = qNA,
                         onClickCheckBox = { questionMultipleChoiceChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)
                     )
                 }
 
-                is Answer.Slider -> {
+                is AnswerUI.Slider -> {
                     QuestionSlider(
                         index = index,
-                        qNA = Pair(qNA.first, answer),
+                        qNA = qNA,
                         onValueChange = { questionSliderChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)
                     )
                 }
 
-                is Answer.LikertScale -> {
+                is AnswerUI.LikertScale -> {
                     QuestionLikertScale(
                         index = index,
-                        qNA = Pair(qNA.first, answer),
+                        qNA = qNA,
                         onValueChange = { questionLikertScaleChange(index, it) },
                         modifier = Modifier
                             .padding(10.dp)

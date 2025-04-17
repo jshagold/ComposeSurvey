@@ -1,7 +1,6 @@
 package com.example.composesurvey.viewmodel
 
 import android.app.Application
-import android.util.Log
 import android.util.Log.e
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
@@ -9,11 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.composesurvey.data.SurveyRepository
 import com.example.composesurvey.data.exception.FileException
 import com.example.composesurvey.data.exception.UnexpectedException
-import com.example.composesurvey.model.Answer
-import com.example.composesurvey.model.Question
-import com.example.composesurvey.model.QuestionType
-import com.example.composesurvey.model.Survey
+import com.example.composesurvey.data.model.Answer
+import com.example.composesurvey.data.model.QuestionAndAnswer
+import com.example.composesurvey.data.model.QuestionType
+import com.example.composesurvey.data.model.Survey
+import com.example.composesurvey.view.converter.toQuestionUI
 import com.example.composesurvey.view.error.ErrorCode
+import com.example.composesurvey.view.model.AnswerUI
+import com.example.composesurvey.view.model.QuestionAndAnswerUI
 import com.example.composesurvey.view.state.SurveyCheckState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,34 +50,49 @@ class SurveyViewModel @Inject constructor(
         try {
             val survey: Survey = surveyRepository.getSurvey(fileName)
 
-            val qNAList: List<Pair<Question, Answer>> = survey.questions.map { question ->
+            val qNAList: List<QuestionAndAnswerUI> = survey.questions.map { question ->
                 when (question.type) {
                     QuestionType.TEXT -> {
-                        Pair(question, Answer.Text(""))
+                        QuestionAndAnswerUI(
+                            question = question.toQuestionUI(),
+                            answer = AnswerUI.Text("")
+                        )
                     }
 
                     QuestionType.SINGLE_CHOICE -> {
                         if (question.options == null) throw FileException(msg = "json element error - single choice")
-                        Pair(question, Answer.SingleChoice(""))
+                        QuestionAndAnswerUI(
+                            question = question.toQuestionUI(),
+                            answer = AnswerUI.SingleChoice("")
+                        )
                     }
 
                     QuestionType.MULTIPLE_CHOICE -> {
                         if (question.options == null) throw FileException(msg = "json element error - multiple choice")
-                        Pair(question, Answer.MultipleChoice(listOf()))
+                        QuestionAndAnswerUI(
+                            question = question.toQuestionUI(),
+                            answer = AnswerUI.MultipleChoice(listOf())
+                        )
                     }
 
                     QuestionType.SLIDER -> {
                         if (question.min == null && question.max == null) throw FileException(msg = "json element error - slider")
-                        Pair(question, Answer.Slider(0))
+                        QuestionAndAnswerUI(
+                            question = question.toQuestionUI(),
+                            answer = AnswerUI.Slider(0)
+                        )
                     }
 
                     QuestionType.LIKERT_SCALE -> {
                         if (question.scaleList == null) throw FileException(msg = "json element error - likert scale")
-                        Pair(question, Answer.LikertScale(0))
+                        QuestionAndAnswerUI(
+                            question = question.toQuestionUI(),
+                            answer = AnswerUI.LikertScale(0)
+                        )
                     }
                 }
             }
-            
+
             _surveyCheckState.update {
                 it.copy(
                     surveyTitle = survey.title,
@@ -100,11 +118,14 @@ class SurveyViewModel @Inject constructor(
 
 
     fun questionTextChange(questionIndex: Int, text: String) {
-        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+        val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                Pair(pair.first, Answer.Text(text))
+                QuestionAndAnswerUI(
+                    question = qNA.question,
+                    answer = AnswerUI.Text(text)
+                )
             } else {
-                pair
+                qNA
             }
         }
 
@@ -116,11 +137,14 @@ class SurveyViewModel @Inject constructor(
     }
 
     fun questionSingleChoiceChange(questionIndex: Int, key: String) {
-        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+        val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                Pair(pair.first, Answer.SingleChoice(key))
+                QuestionAndAnswerUI(
+                    question = qNA.question,
+                    answer = AnswerUI.SingleChoice(key)
+                )
             } else {
-                pair
+                qNA
             }
         }
 
@@ -132,9 +156,9 @@ class SurveyViewModel @Inject constructor(
     }
 
     fun questionMultipleChoiceChange(questionIndex: Int, key: String) {
-        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+        val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                val answer = pair.second as Answer.MultipleChoice
+                val answer = qNA.answer as Answer.MultipleChoice
                 val muList = answer.selected.toMutableList()
                 if (muList.contains(key)) {
                     muList.remove(key)
@@ -142,9 +166,12 @@ class SurveyViewModel @Inject constructor(
                     muList.add(key)
                 }
 
-                Pair(pair.first, Answer.MultipleChoice(muList))
+                QuestionAndAnswerUI(
+                    question = qNA.question,
+                    answer = AnswerUI.MultipleChoice(muList)
+                )
             } else {
-                pair
+                qNA
             }
         }
 
@@ -156,11 +183,14 @@ class SurveyViewModel @Inject constructor(
     }
 
     fun questionSliderChange(questionIndex: Int, value: Int) {
-        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+        val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                Pair(pair.first, Answer.Slider(value))
+                QuestionAndAnswerUI(
+                    question = qNA.question,
+                    answer = AnswerUI.Slider(value)
+                )
             } else {
-                pair
+                qNA
             }
         }
 
@@ -172,11 +202,14 @@ class SurveyViewModel @Inject constructor(
     }
 
     fun questionLikertScaleChange(questionIndex: Int, value: Int) {
-        val list = surveyCheckState.value.questionNAnswerList.mapIndexed { index, pair ->
+        val list: List<QuestionAndAnswerUI> = surveyCheckState.value.questionNAnswerList.mapIndexed { index, qNA ->
             if (index == questionIndex) {
-                Pair(pair.first, Answer.LikertScale(value))
+                QuestionAndAnswerUI(
+                    question = qNA.question,
+                    answer = AnswerUI.LikertScale(value)
+                )
             } else {
-                pair
+                qNA
             }
         }
 
@@ -185,5 +218,13 @@ class SurveyViewModel @Inject constructor(
                 questionNAnswerList = list
             )
         }
+    }
+
+
+    fun saveSurveyResult() {
+        val value = surveyCheckState.value.questionNAnswerList
+        val jsonValue = Json.encodeToString(value)
+
+        e("TAG", "saveSurveyResult: $jsonValue", )
     }
 }

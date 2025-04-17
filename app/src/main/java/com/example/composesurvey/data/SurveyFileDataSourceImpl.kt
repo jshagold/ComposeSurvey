@@ -1,12 +1,11 @@
 package com.example.composesurvey.data
 
 import android.content.Context
-import android.util.Log.e
 import com.example.composesurvey.common.result.Result
 import com.example.composesurvey.data.exception.FileException
 import com.example.composesurvey.data.exception.UnexpectedException
-import com.example.composesurvey.model.Survey
-import com.example.composesurvey.model.SurveyPreview
+import com.example.composesurvey.data.model.Survey
+import com.example.composesurvey.data.model.SurveyPreview
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException

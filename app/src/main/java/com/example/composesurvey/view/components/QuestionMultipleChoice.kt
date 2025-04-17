@@ -14,35 +14,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.composesurvey.model.Answer
-import com.example.composesurvey.model.Question
-import com.example.composesurvey.model.QuestionType
+import com.example.composesurvey.data.model.Answer
+import com.example.composesurvey.data.model.Question
+import com.example.composesurvey.data.model.QuestionType
+import com.example.composesurvey.view.model.AnswerUI
+import com.example.composesurvey.view.model.QuestionAndAnswerUI
+import com.example.composesurvey.view.model.QuestionUI
 
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
 @Composable
 fun PreviewQuestionMultipleChoice() {
-    val question = Question(
+    val question = QuestionUI(
         id = "q3",
         type = QuestionType.MULTIPLE_CHOICE,
         question = "사용해본 Android 아키텍처 패턴을 모두 선택하세요.",
         options = listOf("MVVM", "MVI", "MVC", "Clean Architecture", "MVP")
     )
-
-    val rem = remember { mutableStateOf(Pair(question, Answer.MultipleChoice(listOf("MVI", "MVP")))) }
+    val qna = QuestionAndAnswerUI(
+        question,
+        AnswerUI.MultipleChoice(listOf("MVI", "MVP"))
+    )
+    val rem = remember { mutableStateOf(qna) }
 
     QuestionMultipleChoice(
         index = 1,
         qNA = rem.value,
         onClickCheckBox = { key ->
-            val muList = rem.value.second.selected.toMutableList()
+            val muList = (rem.value.answer as AnswerUI.MultipleChoice).selected.toMutableList()
             if(muList.contains(key)) {
                 muList.remove(key)
             } else {
                 muList.add(key)
             }
 
-            rem.value = Pair(question, Answer.MultipleChoice(muList))
+            rem.value = QuestionAndAnswerUI(
+                question,
+                AnswerUI.MultipleChoice(muList)
+            )
         }
     )
 }
@@ -52,7 +61,7 @@ fun PreviewQuestionMultipleChoice() {
 fun QuestionMultipleChoice(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: Pair<Question, Answer.MultipleChoice>,
+    qNA: QuestionAndAnswerUI,
     onClickCheckBox: (key: String) -> Unit = {}
 ) {
     ConstraintLayout(
@@ -76,7 +85,7 @@ fun QuestionMultipleChoice(
         )
 
         Text(
-            text = qNA.first.question,
+            text = qNA.question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -89,8 +98,8 @@ fun QuestionMultipleChoice(
         )
 
         SelectBoxList(
-            selectedList = qNA.first.options!!,
-            checkedList = qNA.second.selected,
+            selectedList = qNA.question.options!!,
+            checkedList = (qNA.answer as AnswerUI.MultipleChoice).selected,
             onClickCheckBox = onClickCheckBox,
             modifier = Modifier
                 .fillMaxWidth()

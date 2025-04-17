@@ -16,30 +16,39 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.composesurvey.model.Answer
-import com.example.composesurvey.model.Question
-import com.example.composesurvey.model.QuestionType
+import com.example.composesurvey.data.model.Answer
+import com.example.composesurvey.data.model.Question
+import com.example.composesurvey.data.model.QuestionType
+import com.example.composesurvey.view.model.AnswerUI
+import com.example.composesurvey.view.model.QuestionAndAnswerUI
+import com.example.composesurvey.view.model.QuestionUI
 import kotlin.math.round
 
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
 @Composable
 fun PreviewQuestionSlider() {
-    val question = Question(
+    val question = QuestionUI(
         id = "q4",
         type = QuestionType.SLIDER,
         question = "경력 연차를 선택해주세요.",
         min = 0,
         max = 10
     )
-
-    val rem = remember { mutableStateOf(Pair(question, Answer.Slider(0))) }
+    val qna = QuestionAndAnswerUI(
+        question,
+        AnswerUI.Slider(0)
+    )
+    val rem = remember { mutableStateOf(qna) }
 
     QuestionSlider(
         index = 2,
         qNA = rem.value,
         onValueChange = { value ->
-            rem.value = Pair(question, Answer.Slider(value))
+            rem.value = QuestionAndAnswerUI(
+                question,
+                AnswerUI.Slider(value)
+            )
         }
     )
 }
@@ -50,7 +59,7 @@ fun PreviewQuestionSlider() {
 fun QuestionSlider(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: Pair<Question, Answer.Slider>,
+    qNA: QuestionAndAnswerUI,
     onValueChange: (value: Int) -> Unit = {}
 ) {
     ConstraintLayout(
@@ -74,7 +83,7 @@ fun QuestionSlider(
         )
 
         Text(
-            text = qNA.first.question,
+            text = qNA.question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -87,15 +96,15 @@ fun QuestionSlider(
         )
 
         Slider(
-            value = qNA.second.value.toFloat(),
+            value = (qNA.answer as AnswerUI.Slider).value.toFloat(),
             onValueChange = {
                 onValueChange(round(it).toInt())
             },
-            steps = (qNA.first.max!! - qNA.first.min!!) - 1,
-            valueRange = qNA.first.min!!.toFloat()..qNA.first.max!!.toFloat(),
+            steps = (qNA.question.max!! - qNA.question.min!!) - 1,
+            valueRange = qNA.question.min!!.toFloat()..qNA.question.max!!.toFloat(),
             thumb = {
                 Text(
-                    text = "${qNA.second.value}년",
+                    text = "${qNA.answer.value}년",
                     modifier = Modifier
                         .border(1.dp, Black, RoundedCornerShape(2.dp))
                         .padding(2.dp)

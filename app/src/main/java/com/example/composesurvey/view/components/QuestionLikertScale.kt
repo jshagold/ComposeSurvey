@@ -13,28 +13,37 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.composesurvey.model.Answer
-import com.example.composesurvey.model.Question
-import com.example.composesurvey.model.QuestionType
+import com.example.composesurvey.data.model.Answer
+import com.example.composesurvey.data.model.Question
+import com.example.composesurvey.data.model.QuestionType
+import com.example.composesurvey.view.model.AnswerUI
+import com.example.composesurvey.view.model.QuestionAndAnswerUI
+import com.example.composesurvey.view.model.QuestionUI
 
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
 @Composable
 fun PreviewQuestionLikertScale() {
-    val question = Question(
+    val question = QuestionUI(
         id = "q5",
         type = QuestionType.LIKERT_SCALE,
         question = "본인의 실력을 평가해 주세요.",
         scaleList = listOf("매우 못함", "못함", "보통", "잘함", "매우 잘함"),
     )
-
-    val rem = remember { mutableStateOf(Pair(question, Answer.LikertScale(0))) }
+    val qna = QuestionAndAnswerUI(
+        question,
+        AnswerUI.LikertScale(0)
+    )
+    val rem = remember { mutableStateOf(qna) }
 
     QuestionLikertScale(
         index = 2,
         qNA = rem.value,
         onValueChange = { value ->
-            rem.value = Pair(question, Answer.LikertScale(value))
+            rem.value = QuestionAndAnswerUI(
+                question,
+                AnswerUI.LikertScale(value)
+            )
         }
     )
 }
@@ -43,7 +52,7 @@ fun PreviewQuestionLikertScale() {
 fun QuestionLikertScale(
     modifier: Modifier = Modifier,
     index: Int,
-    qNA: Pair<Question, Answer.LikertScale>,
+    qNA: QuestionAndAnswerUI,
     onValueChange: (value: Int) -> Unit = {}
 ) {
     ConstraintLayout(
@@ -66,7 +75,7 @@ fun QuestionLikertScale(
         )
 
         Text(
-            text = qNA.first.question,
+            text = qNA.question.question,
             modifier = Modifier
                 .padding(start = 10.dp)
                 .constrainAs(questionTitle) {
@@ -79,8 +88,8 @@ fun QuestionLikertScale(
         )
 
         LikertScaleComponent(
-            scaleList = qNA.first.scaleList!!,
-            selectedIndex = qNA.second.selected,
+            scaleList = qNA.question.scaleList!!,
+            selectedIndex = (qNA.answer as AnswerUI.LikertScale).selected,
             onClickValue = onValueChange,
             modifier = Modifier
                 .padding(top = 5.dp)
