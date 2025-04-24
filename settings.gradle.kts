@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ComposeSurvey"
 include(":app")
- 
+include(":database")
