@@ -1,4 +1,4 @@
-package com.example.composesurvey.common.result
+package com.example.core.result
 
 sealed class Result<out T> {
     data class Success<out T>(val data: T) : Result<T>()
