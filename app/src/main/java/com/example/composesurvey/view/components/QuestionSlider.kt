@@ -16,12 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.composesurvey.data.model.Answer
-import com.example.composesurvey.data.model.Question
-import com.example.composesurvey.data.model.QuestionType
-import com.example.composesurvey.view.model.AnswerUI
-import com.example.composesurvey.view.model.QuestionAndAnswerUI
-import com.example.composesurvey.view.model.QuestionUI
+import com.example.domain.model.Answer
+import com.example.domain.model.Question
+import com.example.domain.model.QuestionType
+import com.example.composesurvey.model.AnswerUI
+import com.example.composesurvey.model.QuestionAndAnswerUI
+import com.example.composesurvey.model.QuestionTypeUI
+import com.example.composesurvey.model.QuestionUI
 import kotlin.math.round
 
 
@@ -30,7 +31,7 @@ import kotlin.math.round
 fun PreviewQuestionSlider() {
     val question = QuestionUI(
         id = "q4",
-        type = QuestionType.SLIDER,
+        type = QuestionTypeUI.SLIDER,
         question = "경력 연차를 선택해주세요.",
         min = 0,
         max = 10

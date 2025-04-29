@@ -1,4 +1,4 @@
-package com.example.composesurvey.view.model
+package com.example.composesurvey.model
 
 sealed class AnswerUI {
     data class Text(val value: String) : AnswerUI()

@@ -1,11 +1,8 @@
-package com.example.composesurvey.data.model
+package com.example.composesurvey.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class Question(
+data class QuestionUI(
     val id: String,
-    val type: QuestionType,
+    val type: QuestionTypeUI,
     val question: String,
     val required: Boolean = false,
     val options: List<String>? = null, // single_choice, multiple_choice

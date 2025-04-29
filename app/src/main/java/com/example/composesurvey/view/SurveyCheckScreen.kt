@@ -25,7 +25,7 @@ import com.example.composesurvey.view.components.QuestionMultipleChoice
 import com.example.composesurvey.view.components.QuestionSingleChoice
 import com.example.composesurvey.view.components.QuestionSlider
 import com.example.composesurvey.view.components.QuestionText
-import com.example.composesurvey.view.model.AnswerUI
+import com.example.composesurvey.model.AnswerUI
 import com.example.composesurvey.view.state.SurveyCheckState
 import com.example.composesurvey.viewmodel.SurveyViewModel
 

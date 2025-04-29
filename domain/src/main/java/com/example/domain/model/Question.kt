@@ -1,8 +1,6 @@
-package com.example.composesurvey.view.model
+package com.example.domain.model
 
-import com.example.composesurvey.data.model.QuestionType
-
-data class QuestionUI(
+data class Question(
     val id: String,
     val type: QuestionType,
     val question: String,

@@ -4,8 +4,8 @@ import android.content.Context
 import com.example.composesurvey.common.result.Result
 import com.example.composesurvey.data.exception.FileException
 import com.example.composesurvey.data.exception.UnexpectedException
-import com.example.composesurvey.data.model.Survey
-import com.example.composesurvey.data.model.SurveyPreview
+import com.example.domain.model.Survey
+import com.example.domain.model.SurveyPreview
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException

@@ -14,12 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.composesurvey.data.model.Answer
-import com.example.composesurvey.data.model.Question
-import com.example.composesurvey.data.model.QuestionType
-import com.example.composesurvey.view.model.AnswerUI
-import com.example.composesurvey.view.model.QuestionAndAnswerUI
-import com.example.composesurvey.view.model.QuestionUI
+import com.example.domain.model.Answer
+import com.example.domain.model.Question
+import com.example.domain.model.QuestionType
+import com.example.composesurvey.model.AnswerUI
+import com.example.composesurvey.model.QuestionAndAnswerUI
+import com.example.composesurvey.model.QuestionTypeUI
+import com.example.composesurvey.model.QuestionUI
 
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
@@ -27,7 +28,7 @@ import com.example.composesurvey.view.model.QuestionUI
 fun PreviewQuestionSingleChoice() {
     val question = QuestionUI(
         id = "q2",
-        type = QuestionType.SINGLE_CHOICE,
+        type = QuestionTypeUI.SINGLE_CHOICE,
         question = "가장 많이 사용하는 언어는 무엇인가요?",
         required = true,
         options = listOf("Kotlin", "Java", "C++", "Python")

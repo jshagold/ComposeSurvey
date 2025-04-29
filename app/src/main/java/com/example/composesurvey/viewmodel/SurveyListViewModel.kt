@@ -8,9 +8,9 @@ import com.example.composesurvey.common.result.Result
 import com.example.composesurvey.data.SurveyRepository
 import com.example.composesurvey.data.exception.FileException
 import com.example.composesurvey.data.exception.UnexpectedException
-import com.example.composesurvey.data.model.SurveyPreview
+import com.example.domain.model.SurveyPreview
 import com.example.composesurvey.view.error.ErrorCode
-import com.example.composesurvey.view.model.SurveyPreviewUI
+import com.example.composesurvey.model.SurveyPreviewUI
 import com.example.composesurvey.view.state.SurveyListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.example.composesurvey.data.model
+package com.example.domain.model
 
 data class SurveyPreview(
     val title: String,

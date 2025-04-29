@@ -1,4 +1,4 @@
-package com.example.composesurvey.view.model
+package com.example.composesurvey.model
 
 data class QuestionAndAnswerUI(
     val question: QuestionUI,
