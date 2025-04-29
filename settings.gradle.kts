@@ -20,6 +20,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ComposeSurvey"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 include(":app")
 include(":database")
 include(":data")
