@@ -1,6 +1,6 @@
-package com.example.composesurvey.data
+package com.example.domain.repository
 
-import com.example.composesurvey.common.result.Result
+import com.example.core.result.Result
 import com.example.domain.model.Survey
 import com.example.domain.model.SurveyPreview
 import com.example.domain.model.SurveyResult

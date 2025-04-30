@@ -1,9 +1,9 @@
-package com.example.composesurvey.di
+package com.example.data.di
 
-import com.example.composesurvey.data.SurveyFileDataSource
-import com.example.composesurvey.data.SurveyFileDataSourceImpl
-import com.example.composesurvey.data.SurveyRepository
-import com.example.composesurvey.data.SurveyRepositoryImpl
+import com.example.data.datasource.SurveyFileDataSource
+import com.example.data.datasource.SurveyFileDataSourceImpl
+import com.example.data.repository.SurveyRepositoryImpl
+import com.example.domain.repository.SurveyRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

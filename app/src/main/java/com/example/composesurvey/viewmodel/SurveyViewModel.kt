@@ -5,10 +5,7 @@ import android.util.Log.e
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.composesurvey.data.SurveyRepository
-import com.example.composesurvey.data.exception.FileException
-import com.example.composesurvey.data.exception.UnexpectedException
-import com.example.domain.model.Answer
+import com.example.domain.repository.SurveyRepository
 import com.example.domain.model.QuestionAndAnswer
 import com.example.domain.model.QuestionType
 import com.example.domain.model.Survey
@@ -18,6 +15,8 @@ import com.example.composesurvey.view.error.ErrorCode
 import com.example.composesurvey.model.AnswerUI
 import com.example.composesurvey.model.QuestionAndAnswerUI
 import com.example.composesurvey.view.state.SurveyCheckState
+import com.example.core.exception.FileException
+import com.example.core.exception.UnexpectedException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

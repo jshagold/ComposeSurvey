@@ -1,10 +1,13 @@
-package com.example.composesurvey.data
+package com.example.data.datasource
 
 import android.content.Context
-import com.example.composesurvey.common.result.Result
-import com.example.composesurvey.data.exception.FileException
-import com.example.composesurvey.data.exception.UnexpectedException
-import com.example.domain.model.Survey
+import android.util.Log
+import com.example.core.result.Result
+import com.example.core.exception.FileException
+import com.example.core.exception.UnexpectedException
+import com.example.data.mapper.toDomain
+import com.example.data.model.Survey
+import com.example.domain.model.Survey as SurveyDomain
 import com.example.domain.model.SurveyPreview
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -21,14 +24,15 @@ class SurveyFileDataSourceImpl @Inject constructor(
     private val assetFolder = "survey"
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun getSurvey(fileName: String): Survey {
+    override fun getSurvey(fileName: String): SurveyDomain {
         try {
             val assetManager = context.resources.assets
             val jsonFile = assetManager.open("$assetFolder/$fileName")
-            val survey = Json.decodeFromStream<Survey>(jsonFile)
+            val survey = Json.Default.decodeFromStream<Survey>(jsonFile)
 
-            return survey
+            return survey.toDomain()
         } catch (e: IOException) {
+            Log.e("TAG", "getSurvey: ${e.printStackTrace()}", )
             throw FileException("파일 에러", e)
         } catch (e: SerializationException) {
             throw FileException("Json decode 에러", e)
@@ -48,9 +52,10 @@ class SurveyFileDataSourceImpl @Inject constructor(
             return fileList.map { fileName ->
                 try {
                     val fileStream = assetManager.open("$assetFolder/$fileName")
-                    val jsonFile = Json.decodeFromStream<Survey>(fileStream)
+                    val jsonFile = Json.Default.decodeFromStream<Survey>(fileStream)
                     Result.Success(SurveyPreview(title = jsonFile.title, fileName = fileName))
                 } catch (e: IOException) {
+                    Log.e("TAG", "getSurveyTitleList: ${e.printStackTrace()}", )
                     Result.Failure(
                         message = "fileName = $fileName",
                         cause = FileException("파일 에러", e)
@@ -73,6 +78,7 @@ class SurveyFileDataSourceImpl @Inject constructor(
                 }
             }
         } catch (e: IOException) {
+            Log.e("TAG", "getSurveyTitleList: ${e.printStackTrace()}", )
             throw FileException("파일 에러", e)
         } catch (e: Exception) {
             throw UnexpectedException("Error", e)
@@ -80,10 +86,10 @@ class SurveyFileDataSourceImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun getSurveyList(): List<Survey> {
+    override fun getSurveyList(): List<SurveyDomain> {
         val assetFolder = "survey"
 
-        val surveyList = mutableListOf<Survey>()
+        val surveyList = mutableListOf<SurveyDomain>()
 
         try {
             val assetManager = context.resources.assets
@@ -93,11 +99,12 @@ class SurveyFileDataSourceImpl @Inject constructor(
             fileList?.let {
                 it.forEach {
                     val fileStream = assetManager.open("$assetFolder/$it")
-                    surveyList.add(Json.decodeFromStream<Survey>(fileStream))
+                    surveyList.add(Json.Default.decodeFromStream<Survey>(fileStream).toDomain())
                 }
             }
 
         } catch (e: IOException) {
+            Log.e("TAG", "getSurveyList: ${e.printStackTrace()}", )
             throw FileException("파일 에러", e)
         } catch (e: SerializationException) {
             throw FileException("Json decode 에러", e)
@@ -110,8 +117,3 @@ class SurveyFileDataSourceImpl @Inject constructor(
         return surveyList
     }
 }
-
-
-
-
-

@@ -1,9 +1,11 @@
-package com.example.composesurvey.data
+package com.example.data.repository
 
-import com.example.composesurvey.common.result.Result
+import com.example.core.result.Result
+import com.example.data.datasource.SurveyFileDataSource
 import com.example.domain.model.Survey
 import com.example.domain.model.SurveyPreview
 import com.example.domain.model.SurveyResult
+import com.example.domain.repository.SurveyRepository
 import javax.inject.Inject
 
 class SurveyRepositoryImpl @Inject constructor(
