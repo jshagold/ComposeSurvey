@@ -78,7 +78,7 @@ fun SurveyListScreen(
                             .fillMaxWidth()
                             .border(1.dp, Black, RoundedCornerShape(10.dp))
                             .noRippleClickable {
-                                navigateToSurveyCheck(resultTitle.data.surveyId)
+                                navigateToSurveyCheck(resultTitle.data.id)
                             }
                             .padding(10.dp)
 

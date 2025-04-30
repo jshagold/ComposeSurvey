@@ -11,6 +11,7 @@ import com.example.composesurvey.view.state.SurveyListState
 import com.example.core.exception.FileException
 import com.example.core.exception.UnexpectedException
 import com.example.core.result.Result
+import com.example.domain.model.Survey as SurveyDomain
 import com.example.domain.model.SurveyPreview
 import com.example.domain.repository.SurveyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,14 +32,14 @@ class SurveyListViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val resultSurveyList: List<Result<SurveyUI>> = surveyRepository.getSurveyTitleList().map { surveyPreview ->
-                    when(surveyPreview) {
+                val resultSurveyList: List<Result<SurveyUI>> = surveyRepository.getSurveyList().map { survey: Result<SurveyDomain> ->
+                    when(survey) {
                         is Result.Failure -> {
-                            Log.e("${this@SurveyListViewModel.javaClass}", "init getSurveyTitleList: ${surveyPreview.cause?.printStackTrace()}", )
-                            surveyPreview
+                            Log.e("${this@SurveyListViewModel.javaClass}", "init getSurveyTitleList: ${survey.cause?.printStackTrace()}", )
+                            survey
                         }
-                        is Result.Success<SurveyPreview> -> {
-                            Result.Success(surveyPreview.data.toUI())
+                        is Result.Success<SurveyDomain> -> {
+                            Result.Success(survey.data.toUI())
                         }
                     }
                 }
