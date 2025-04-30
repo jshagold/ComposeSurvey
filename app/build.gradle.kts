@@ -44,8 +44,8 @@ android {
 
 dependencies {
     implementation(projects.core)
-    implementation(projects.data)
     implementation(projects.domain)
+    implementation(projects.data)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
