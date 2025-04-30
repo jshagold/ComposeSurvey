@@ -13,7 +13,7 @@ interface SurveyRepository {
 
     fun getSurveyTitleList(): List<Result<SurveyPreview>>
 
-    fun getSurveyList(): List<Survey>
+    suspend fun getSurveyList(): List<Result<Survey>>
 
     fun exportSurveyResult(result: SurveyResult)
 

@@ -32,7 +32,6 @@ class SurveyFileDataSourceImpl @Inject constructor(
 
             return survey.toDomain()
         } catch (e: IOException) {
-            Log.e("TAG", "getSurvey: ${e.printStackTrace()}", )
             throw FileException("파일 에러", e)
         } catch (e: SerializationException) {
             throw FileException("Json decode 에러", e)
