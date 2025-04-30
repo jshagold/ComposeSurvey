@@ -34,7 +34,8 @@ class SurveyViewModel @Inject constructor(
     private val surveyRepository: SurveyRepository
 ) : AndroidViewModel(application) {
 
-    private val surveyTitle: String = savedStateHandle["fileName"] ?: ""
+    private val routeArgument: String = savedStateHandle["surveyId"] ?: "0"
+    private val surveyId: Long = routeArgument.toLong()
 
     private var _surveyCheckState: MutableStateFlow<SurveyCheckState> =
         MutableStateFlow(SurveyCheckState())
@@ -42,13 +43,13 @@ class SurveyViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            loadSurvey(surveyTitle)
+            loadSurvey(surveyId)
         }
     }
 
-    private fun loadSurvey(fileName: String) {
+    private fun loadSurvey(surveyId: Long) {
         try {
-            val survey: Survey = surveyRepository.getSurvey(fileName)
+            val survey: Survey = surveyRepository.getSurvey(surveyId)
 
             val qNAList: List<QuestionAndAnswerUI> = survey.questions.map { question ->
                 when (question.type) {

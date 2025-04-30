@@ -11,6 +11,10 @@ import javax.inject.Inject
 class SurveyRepositoryImpl @Inject constructor(
     val surveyFileDataSource: SurveyFileDataSource
 ) : SurveyRepository {
+    override fun getSurvey(surveyId: Long): Survey {
+        TODO("Not yet implemented")
+    }
+
     override fun getSurvey(fileName: String): Survey {
         return surveyFileDataSource.getSurvey(fileName)
     }

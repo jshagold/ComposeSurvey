@@ -4,7 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.composesurvey.model.SurveyPreviewUI
+import com.example.composesurvey.mapper.toUI
+import com.example.composesurvey.model.SurveyUI
 import com.example.composesurvey.view.error.ErrorCode
 import com.example.composesurvey.view.state.SurveyListState
 import com.example.core.exception.FileException
@@ -30,26 +31,21 @@ class SurveyListViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val resultSurveyList: List<Result<SurveyPreviewUI>> = surveyRepository.getSurveyTitleList().map { surveyPreview ->
+                val resultSurveyList: List<Result<SurveyUI>> = surveyRepository.getSurveyTitleList().map { surveyPreview ->
                     when(surveyPreview) {
                         is Result.Failure -> {
-                            Log.e("TAG", "init getSurveyTitleList: ${surveyPreview.cause?.printStackTrace()}", )
+                            Log.e("${this@SurveyListViewModel.javaClass}", "init getSurveyTitleList: ${surveyPreview.cause?.printStackTrace()}", )
                             surveyPreview
                         }
                         is Result.Success<SurveyPreview> -> {
-                            Result.Success(
-                                SurveyPreviewUI(
-                                    title = surveyPreview.data.title,
-                                    fileName = surveyPreview.data.fileName
-                                )
-                            )
+                            Result.Success(surveyPreview.data.toUI())
                         }
                     }
                 }
 
                 _surveyListState.update {
                     it.copy(
-                        titleList = resultSurveyList
+                        surveyList = resultSurveyList
                     )
                 }
             } catch (e: FileException) {

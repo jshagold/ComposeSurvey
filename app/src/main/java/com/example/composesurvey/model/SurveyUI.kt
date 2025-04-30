@@ -1,6 +1,6 @@
 package com.example.composesurvey.model
 
-data class SurveyPreviewUI(
+data class SurveyUI(
+    val surveyId: Long,
     val title: String,
-    val fileName: String,
 )

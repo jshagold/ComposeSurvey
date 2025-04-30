@@ -7,6 +7,8 @@ import com.example.domain.model.SurveyResult
 
 interface SurveyRepository {
 
+    fun getSurvey(surveyId: Long): Survey
+
     fun getSurvey(fileName: String): Survey
 
     fun getSurveyTitleList(): List<Result<SurveyPreview>>

@@ -10,7 +10,6 @@ fun NavController.navigateToSurveyList() {
 }
 
 
-fun NavController.navigateToSurveyCheck(fileName: String) {
-    val encodeFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString())
-    this.navigate("${Route.CHECK}/$encodeFileName")
+fun NavController.navigateToSurveyCheck(surveyId: Long) {
+    this.navigate("${Route.CHECK}/$surveyId")
 }

@@ -41,7 +41,7 @@ fun PreviewSurveyListScreen() {
 fun SurveyListRoute(
     modifier: Modifier = Modifier,
     viewModel: SurveyListViewModel = hiltViewModel(),
-    navigateToSurveyCheck: (title: String) -> Unit = {},
+    navigateToSurveyCheck: (surveyId: Long) -> Unit = {},
 ) {
 
     val uiState by viewModel.surveyListState.collectAsStateWithLifecycle()
@@ -58,7 +58,7 @@ fun SurveyListRoute(
 fun SurveyListScreen(
     modifier: Modifier = Modifier,
     uiState: SurveyListState,
-    navigateToSurveyCheck: (fileName: String) -> Unit = {},
+    navigateToSurveyCheck: (surveyId: Long) -> Unit = {},
 ) {
 
     LazyColumn(
@@ -68,7 +68,7 @@ fun SurveyListScreen(
             .background(White)
             .padding(horizontal = 10.dp)
     ) {
-        items(uiState.titleList) { resultTitle ->
+        items(uiState.surveyList) { resultTitle ->
             when(resultTitle) {
                 is Result.Success -> {
                     Text(
@@ -78,7 +78,7 @@ fun SurveyListScreen(
                             .fillMaxWidth()
                             .border(1.dp, Black, RoundedCornerShape(10.dp))
                             .noRippleClickable {
-                                navigateToSurveyCheck(resultTitle.data.fileName)
+                                navigateToSurveyCheck(resultTitle.data.surveyId)
                             }
                             .padding(10.dp)
 

@@ -43,14 +43,14 @@ fun MainNavHost(
 
         composable(route = Route.LIST) {
             SurveyListRoute(
-                navigateToSurveyCheck = { fileName ->
-                    navController.navigateToSurveyCheck(fileName = fileName)
+                navigateToSurveyCheck = { surveyId ->
+                    navController.navigateToSurveyCheck(surveyId = surveyId)
                 }
             )
         }
 
-        composable(route = "${Route.CHECK}/{fileName}") { navBackStackEntry ->
-            val surveyTitle = navBackStackEntry.arguments?.getString("fileName")
+        composable(route = "${Route.CHECK}/{surveyId}") { navBackStackEntry ->
+            val surveyTitle = navBackStackEntry.arguments?.getLong("surveyId")
             val viewModel = navBackStackEntry.sharedViewModel<SurveyViewModel>(navController = navController)
 
 
