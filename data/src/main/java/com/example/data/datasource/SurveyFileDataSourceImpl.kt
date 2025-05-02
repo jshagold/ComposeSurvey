@@ -24,13 +24,13 @@ class SurveyFileDataSourceImpl @Inject constructor(
     private val assetFolder = "survey"
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun getSurvey(fileName: String): SurveyDomain {
+    override fun getSurvey(fileName: String): Survey {
         try {
             val assetManager = context.resources.assets
             val jsonFile = assetManager.open("$assetFolder/$fileName")
             val survey = Json.Default.decodeFromStream<Survey>(jsonFile)
 
-            return survey.toDomain()
+            return survey
         } catch (e: IOException) {
             throw FileException("파일 에러", e)
         } catch (e: SerializationException) {
@@ -85,10 +85,10 @@ class SurveyFileDataSourceImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun getSurveyList(): List<SurveyDomain> {
+    override fun getSurveyList(): List<Survey> {
         val assetFolder = "survey"
 
-        val surveyList = mutableListOf<SurveyDomain>()
+        val surveyList = mutableListOf<Survey>()
 
         try {
             val assetManager = context.resources.assets
@@ -97,8 +97,9 @@ class SurveyFileDataSourceImpl @Inject constructor(
 
             fileList?.let {
                 it.forEach {
+                    Log.e("TAG", "getSurveyList: $it", )
                     val fileStream = assetManager.open("$assetFolder/$it")
-                    surveyList.add(Json.Default.decodeFromStream<Survey>(fileStream).toDomain())
+                    surveyList.add(Json.Default.decodeFromStream<Survey>(fileStream))
                 }
             }
 

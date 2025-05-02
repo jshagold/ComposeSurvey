@@ -53,6 +53,9 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.navigation.compose)
 
+    // Room
+    implementation(libs.room.ktx)
+
     // JSON Kotlin Serialization
     implementation(libs.kotlinx.serialization.json)
 }

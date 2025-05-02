@@ -13,6 +13,8 @@ interface SurveyDBDataSource {
 
 //    fun getSurveyTitleList(): List<Result<SurveyPreview>>
 
+    suspend fun saveSurveyWithQuestions(survey: Survey)
+
     fun saveSurvey(survey: Survey)
 
     fun saveQuestion(question: Question)

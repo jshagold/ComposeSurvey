@@ -6,8 +6,10 @@ import com.example.core.serialize.parseOptionsIfNeeded
 import com.example.core.serialize.parseRequired
 import com.example.core.serialize.parseScaleListIfNeeded
 import com.example.data.model.Question
+import com.example.data.model.QuestionOptionJsonDTO
 import com.example.data.model.QuestionType
 import com.example.database.model.QuestionEntity
+import kotlinx.serialization.json.Json
 import com.example.domain.model.Question as QuestionDomain
 
 fun Question.toDomain() = QuestionDomain(
@@ -31,6 +33,27 @@ fun QuestionDomain.toData() = Question(
     max = this.max,
     scaleList = this.scaleList
 )
+
+// todo json key값 하드코딩
+fun Question.toEntity(surveyId: Long): QuestionEntity {
+    val jsonOption = Json.encodeToString(
+        QuestionOptionJsonDTO(
+            required = this.required,
+            options = this.options,
+            min = this.min,
+            max = this.max,
+            scaleList = this.scaleList,
+        )
+    )
+
+    return QuestionEntity(
+        surveyId = surveyId,
+        questionText = this.question,
+        type = this.type.name,
+        jsonOption = jsonOption,
+    )
+}
+
 
 fun QuestionEntity.toData(): Question {
     return Question(

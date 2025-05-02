@@ -17,3 +17,8 @@ fun SurveyDomain.toData() = Survey(
     description = this.description,
     questions = this.questions.map { it.toData() }
 )
+
+fun Survey.toEntity() = SurveyEntity(
+    title = this.title,
+    description = this.description
+)
