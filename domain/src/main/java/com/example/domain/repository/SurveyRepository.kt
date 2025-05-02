@@ -15,6 +15,8 @@ interface SurveyRepository {
 
     suspend fun getSurveyList(): List<Result<Survey>>
 
+    suspend fun saveSurveyToDBFromFile(): Result<String>
+
     fun exportSurveyResult(result: SurveyResult)
 
 }
