@@ -10,5 +10,5 @@ data class SurveyEntity(
 
     val title: String,
     val description: String? = null,
-    val createdAt: Long,
+    val createdAt: Long = System.currentTimeMillis(),
 )

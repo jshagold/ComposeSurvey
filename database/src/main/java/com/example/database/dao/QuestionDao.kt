@@ -14,6 +14,9 @@ interface QuestionDao {
     @Upsert
     suspend fun upsertQuestion(question: QuestionEntity)
 
+    @Upsert
+    suspend fun upsertQuestions(questionList: List<QuestionEntity>)
+
     @Delete
     suspend fun deleteQuestion(question: QuestionEntity)
 

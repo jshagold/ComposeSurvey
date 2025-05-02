@@ -14,7 +14,7 @@ import com.example.database.model.SurveyWithQuestions
 interface SurveyDao {
 
     @Upsert
-    suspend fun upsertSurvey(surveyEntity: SurveyEntity)
+    suspend fun upsertSurvey(surveyEntity: SurveyEntity): Long
 
     @Delete
     suspend fun deleteSurvey(surveyEntity: SurveyEntity)
@@ -25,12 +25,12 @@ interface SurveyDao {
     @Query("SELECT * FROM survey WHERE id = :surveyId")
     suspend fun getSurveyById(surveyId: Long): SurveyEntity?
 
-
-    @Transaction
-    @Query("SELECT * FROM survey WHERE id = :surveyId ")
-    suspend fun getSurveyWithQuestions(surveyId: Long): SurveyWithQuestions?
-
     @Transaction
     @Query("SELECT * FROM survey")
     suspend fun getAllSurveyWithQuestions(): List<SurveyWithQuestions>
+
+    @Transaction
+    @Query("SELECT * FROM survey WHERE id = :surveyId")
+    suspend fun getSurveyWithQuestions(surveyId: Long): SurveyWithQuestions?
+    
 }
