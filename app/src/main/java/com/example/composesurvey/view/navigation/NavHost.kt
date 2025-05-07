@@ -50,7 +50,6 @@ fun MainNavHost(
         }
 
         composable(route = "${Route.CHECK}/{surveyId}") { navBackStackEntry ->
-            val surveyTitle = navBackStackEntry.arguments?.getLong("surveyId")
             val viewModel = navBackStackEntry.sharedViewModel<SurveyViewModel>(navController = navController)
 
 

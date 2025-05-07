@@ -34,7 +34,6 @@ fun QuestionDomain.toData() = Question(
     scaleList = this.scaleList
 )
 
-// todo json key값 하드코딩
 fun Question.toEntity(surveyId: Long): QuestionEntity {
     val jsonOption = Json.encodeToString(
         QuestionOptionJsonDTO(
