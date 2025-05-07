@@ -1,7 +1,6 @@
 package com.example.data.datasource
 
 import androidx.room.withTransaction
-import com.example.core.exception.NoDataException
 import com.example.data.mapper.toData
 import com.example.data.mapper.toEntity
 import com.example.data.model.Answer

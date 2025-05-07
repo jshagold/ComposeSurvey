@@ -18,6 +18,7 @@ import com.example.composesurvey.view.state.SurveyCheckState
 import com.example.core.exception.FileException
 import com.example.core.exception.UnexpectedException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -63,7 +64,7 @@ class SurveyViewModel @Inject constructor(
                             }
 
                             QuestionType.SINGLE_CHOICE -> {
-                                if (question.options == null) throw FileException(msg = "json element error - single choice")
+                                if (question.options == null) throw FileException(msg = "json element null - single choice")
                                 QuestionAndAnswerUI(
                                     question = question.toQuestionUI(),
                                     answer = AnswerUI.SingleChoice("")
@@ -71,7 +72,7 @@ class SurveyViewModel @Inject constructor(
                             }
 
                             QuestionType.MULTIPLE_CHOICE -> {
-                                if (question.options == null) throw FileException(msg = "json element error - multiple choice")
+                                if (question.options == null) throw FileException(msg = "json element null - multiple choice")
                                 QuestionAndAnswerUI(
                                     question = question.toQuestionUI(),
                                     answer = AnswerUI.MultipleChoice(listOf())
@@ -79,7 +80,7 @@ class SurveyViewModel @Inject constructor(
                             }
 
                             QuestionType.SLIDER -> {
-                                if (question.min == null && question.max == null) throw FileException(msg = "json element error - slider")
+                                if (question.min == null && question.max == null) throw FileException(msg = "json element null - slider")
                                 QuestionAndAnswerUI(
                                     question = question.toQuestionUI(),
                                     answer = AnswerUI.Slider(0)
@@ -87,7 +88,7 @@ class SurveyViewModel @Inject constructor(
                             }
 
                             QuestionType.LIKERT_SCALE -> {
-                                if (question.scaleList == null) throw FileException(msg = "json element error - likert scale")
+                                if (question.scaleList == null) throw FileException(msg = "json element null - likert scale")
                                 QuestionAndAnswerUI(
                                     question = question.toQuestionUI(),
                                     answer = AnswerUI.LikertScale(0)
@@ -111,14 +112,14 @@ class SurveyViewModel @Inject constructor(
                 }
 
             } catch (e: FileException) {
-                e("TAG", "loadSurvey: ${e.printStackTrace()}")
+                Napier.e(message = "data = $surveyId", throwable = e)
                 _surveyCheckState.update {
                     it.copy(
                         errorCode = ErrorCode.FILE
                     )
                 }
             } catch (e: UnexpectedException) {
-                e("TAG", "loadSurvey: ${e.printStackTrace()}")
+                Napier.e(message = "data = $surveyId", throwable = e)
                 _surveyCheckState.update {
                     it.copy(
                         errorCode = ErrorCode.UNEXPECTED

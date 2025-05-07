@@ -1,6 +1,7 @@
 package com.example.core.serialize
 
 import com.example.core.constants.SurveyJson
+import io.github.aakira.napier.Napier
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -13,6 +14,8 @@ fun parseRequired(json: String?): Boolean {
         json?.let {
             Json.parseToJsonElement(it).jsonObject[SurveyJson.REQUIRED]?.jsonPrimitive?.boolean == true
         } == true
+    }.onFailure {
+        Napier.e(message = "data = $json", throwable = it)
     }.getOrDefault(false)
 }
 
@@ -23,6 +26,8 @@ fun parseOptionsIfNeeded(type: String, json: String?): List<String>? {
                 val option = Json.parseToJsonElement(it).jsonObject[SurveyJson.OPTIONS]
                 Json.decodeFromJsonElement<List<String>>(option!!)
             }
+        }.onFailure {
+            Napier.e(message = "data = $json", throwable = it)
         }.getOrNull()
     } else null
 }
@@ -33,6 +38,8 @@ fun parseMinIfNeeded(type: String, json: String?): Int? {
             json?.let {
                 Json.parseToJsonElement(it).jsonObject[SurveyJson.MIN]?.jsonPrimitive?.int
             }
+        }.onFailure {
+            Napier.e(message = "data = $json", throwable = it)
         }.getOrNull()
     } else null
 }
@@ -43,6 +50,8 @@ fun parseMaxIfNeeded(type: String, json: String?): Int? {
             json?.let {
                 Json.parseToJsonElement(it).jsonObject[SurveyJson.MAX]?.jsonPrimitive?.int
             }
+        }.onFailure {
+            Napier.e(message = "data = $json", throwable = it)
         }.getOrNull()
     } else null
 }
@@ -54,6 +63,8 @@ fun parseScaleListIfNeeded(type: String, json: String?): List<String>? {
                 val scaleList = Json.parseToJsonElement(it).jsonObject[SurveyJson.SCALE_LIST]
                 Json.decodeFromJsonElement<List<String>>(scaleList!!)
             }
+        }.onFailure {
+            Napier.e(message = "data = $json", throwable = it)
         }.getOrNull()
     } else null
 }
