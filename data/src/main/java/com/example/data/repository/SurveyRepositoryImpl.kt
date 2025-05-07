@@ -18,8 +18,8 @@ class SurveyRepositoryImpl @Inject constructor(
     val surveyFileDataSource: SurveyFileDataSource,
     val surveyDBDataSource: SurveyDBDataSource,
 ) : SurveyRepository {
-    override fun getSurvey(surveyId: Long): Survey {
-        TODO("Not yet implemented")
+    override suspend fun getSurvey(surveyId: Long): Survey? {
+        return surveyDBDataSource.getSurvey(surveyId)?.toDomain()
     }
 
     override fun getSurvey(fileName: String): Survey {

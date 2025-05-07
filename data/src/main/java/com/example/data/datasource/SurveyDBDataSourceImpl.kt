@@ -1,6 +1,7 @@
 package com.example.data.datasource
 
 import androidx.room.withTransaction
+import com.example.core.exception.NoDataException
 import com.example.data.mapper.toData
 import com.example.data.mapper.toEntity
 import com.example.data.model.Answer
@@ -18,8 +19,16 @@ class SurveyDBDataSourceImpl @Inject constructor(
     private val questionDao: QuestionDao,
     private val answerDao: AnswerDao,
 ): SurveyDBDataSource {
-    override fun getSurveyByFileName(fileName: String): Survey {
-        TODO("Not yet implemented")
+
+    override suspend fun getSurvey(surveyId: Long): Survey? {
+        val surveyWithQuestion = surveyDao.getSurveyWithQuestions(surveyId) ?: return null
+
+        return Survey(
+            id = surveyWithQuestion.survey.id,
+            title = surveyWithQuestion.survey.title,
+            description = surveyWithQuestion.survey.description,
+            questions = surveyWithQuestion.questions.map { it.toData() }
+        )
     }
 
     override suspend fun getSurveyList(): List<Survey> {

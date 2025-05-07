@@ -48,71 +48,82 @@ class SurveyViewModel @Inject constructor(
     }
 
     private fun loadSurvey(surveyId: Long) {
-        try {
-            val survey: Survey = surveyRepository.getSurvey(surveyId)
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val survey: Survey? = surveyRepository.getSurvey(surveyId)
 
-            val qNAList: List<QuestionAndAnswerUI> = survey.questions.map { question ->
-                when (question.type) {
-                    QuestionType.TEXT -> {
-                        QuestionAndAnswerUI(
-                            question = question.toQuestionUI(),
-                            answer = AnswerUI.Text("")
-                        )
+                if(survey != null) {
+                    val qNAList: List<QuestionAndAnswerUI> = survey.questions.map { question ->
+                        when (question.type) {
+                            QuestionType.TEXT -> {
+                                QuestionAndAnswerUI(
+                                    question = question.toQuestionUI(),
+                                    answer = AnswerUI.Text("")
+                                )
+                            }
+
+                            QuestionType.SINGLE_CHOICE -> {
+                                if (question.options == null) throw FileException(msg = "json element error - single choice")
+                                QuestionAndAnswerUI(
+                                    question = question.toQuestionUI(),
+                                    answer = AnswerUI.SingleChoice("")
+                                )
+                            }
+
+                            QuestionType.MULTIPLE_CHOICE -> {
+                                if (question.options == null) throw FileException(msg = "json element error - multiple choice")
+                                QuestionAndAnswerUI(
+                                    question = question.toQuestionUI(),
+                                    answer = AnswerUI.MultipleChoice(listOf())
+                                )
+                            }
+
+                            QuestionType.SLIDER -> {
+                                if (question.min == null && question.max == null) throw FileException(msg = "json element error - slider")
+                                QuestionAndAnswerUI(
+                                    question = question.toQuestionUI(),
+                                    answer = AnswerUI.Slider(0)
+                                )
+                            }
+
+                            QuestionType.LIKERT_SCALE -> {
+                                if (question.scaleList == null) throw FileException(msg = "json element error - likert scale")
+                                QuestionAndAnswerUI(
+                                    question = question.toQuestionUI(),
+                                    answer = AnswerUI.LikertScale(0)
+                                )
+                            }
+                        }
                     }
 
-                    QuestionType.SINGLE_CHOICE -> {
-                        if (question.options == null) throw FileException(msg = "json element error - single choice")
-                        QuestionAndAnswerUI(
-                            question = question.toQuestionUI(),
-                            answer = AnswerUI.SingleChoice("")
+                    _surveyCheckState.update {
+                        it.copy(
+                            surveyTitle = survey.title,
+                            questionNAnswerList = qNAList
                         )
                     }
-
-                    QuestionType.MULTIPLE_CHOICE -> {
-                        if (question.options == null) throw FileException(msg = "json element error - multiple choice")
-                        QuestionAndAnswerUI(
-                            question = question.toQuestionUI(),
-                            answer = AnswerUI.MultipleChoice(listOf())
-                        )
-                    }
-
-                    QuestionType.SLIDER -> {
-                        if (question.min == null && question.max == null) throw FileException(msg = "json element error - slider")
-                        QuestionAndAnswerUI(
-                            question = question.toQuestionUI(),
-                            answer = AnswerUI.Slider(0)
-                        )
-                    }
-
-                    QuestionType.LIKERT_SCALE -> {
-                        if (question.scaleList == null) throw FileException(msg = "json element error - likert scale")
-                        QuestionAndAnswerUI(
-                            question = question.toQuestionUI(),
-                            answer = AnswerUI.LikertScale(0)
+                } else {
+                    _surveyCheckState.update {
+                        it.copy(
+                            errorCode = ErrorCode.NULLELEMENT
                         )
                     }
                 }
-            }
 
-            _surveyCheckState.update {
-                it.copy(
-                    surveyTitle = survey.title,
-                    questionNAnswerList = qNAList
-                )
-            }
-        } catch (e: FileException) {
-            e("TAG", "loadSurvey: ${e.printStackTrace()}")
-            _surveyCheckState.update {
-                it.copy(
-                    errorCode = ErrorCode.FILE
-                )
-            }
-        } catch (e: UnexpectedException) {
-            e("TAG", "loadSurvey: ${e.printStackTrace()}")
-            _surveyCheckState.update {
-                it.copy(
-                    errorCode = ErrorCode.UNEXPECTED
-                )
+            } catch (e: FileException) {
+                e("TAG", "loadSurvey: ${e.printStackTrace()}")
+                _surveyCheckState.update {
+                    it.copy(
+                        errorCode = ErrorCode.FILE
+                    )
+                }
+            } catch (e: UnexpectedException) {
+                e("TAG", "loadSurvey: ${e.printStackTrace()}")
+                _surveyCheckState.update {
+                    it.copy(
+                        errorCode = ErrorCode.UNEXPECTED
+                    )
+                }
             }
         }
     }
