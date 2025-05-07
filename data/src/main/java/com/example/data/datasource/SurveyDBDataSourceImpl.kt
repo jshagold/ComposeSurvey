@@ -5,11 +5,15 @@ import com.example.data.mapper.toData
 import com.example.data.mapper.toEntity
 import com.example.data.model.Answer
 import com.example.data.model.Question
+import com.example.data.model.QuestionAndAnswer
 import com.example.data.model.Survey
 import com.example.database.SurveyDatabase
 import com.example.database.dao.AnswerDao
 import com.example.database.dao.QuestionDao
 import com.example.database.dao.SurveyDao
+import com.example.database.model.AnswerEntity
+import kotlinx.serialization.json.Json
+import java.util.UUID
 import javax.inject.Inject
 
 class SurveyDBDataSourceImpl @Inject constructor(
@@ -60,7 +64,16 @@ class SurveyDBDataSourceImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun saveAnswer(answer: Answer) {
-        TODO("Not yet implemented")
+    override suspend fun saveAnswerList(answer: List<QuestionAndAnswer>) {
+        val answerList = answer.map {
+            AnswerEntity(
+                surveyId = it.question.surveyId,
+                questionId = it.question.id,
+                answerGroupId = UUID.randomUUID().toString(),
+                answerValue = Json.encodeToString(it.answer),
+            )
+        }.toTypedArray()
+
+        answerDao.upsetAnswerList(*answerList)
     }
 }

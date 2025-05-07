@@ -5,12 +5,13 @@ import com.example.core.exception.UnexpectedException
 import com.example.core.result.Result
 import com.example.data.datasource.SurveyDBDataSource
 import com.example.data.datasource.SurveyFileDataSource
+import com.example.data.mapper.toData
 import com.example.data.mapper.toDomain
+import com.example.domain.model.QuestionAndAnswer
 import com.example.domain.model.Survey
 import com.example.domain.model.SurveyPreview
 import com.example.domain.model.SurveyResult
 import com.example.domain.repository.SurveyRepository
-import java.io.File
 import com.example.data.model.Survey as SurveyData
 import javax.inject.Inject
 
@@ -51,6 +52,12 @@ class SurveyRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.Failure("saveSurveyToDBFromFile", UnexpectedException(msg = "예상 외", cause = e))
         }
+    }
+
+    override suspend fun saveSurveyResult(result: List<QuestionAndAnswer>) {
+        val resultData = result.map { it.toData() }
+
+        surveyDBDataSource.saveAnswerList(resultData)
     }
 
 

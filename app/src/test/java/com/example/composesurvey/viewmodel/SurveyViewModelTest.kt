@@ -1,4 +1,5 @@
-import org.junit.jupiter.api.Assertions.*
+package com.example.composesurvey.viewmodel
+
 class SurveyViewModelTest {
-  
+
 }

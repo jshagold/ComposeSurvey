@@ -2,6 +2,7 @@ package com.example.data.datasource
 
 import com.example.data.model.Answer
 import com.example.data.model.Question
+import com.example.data.model.QuestionAndAnswer
 import com.example.data.model.Survey
 
 interface SurveyDBDataSource {
@@ -18,5 +19,5 @@ interface SurveyDBDataSource {
 
     fun saveQuestion(question: Question)
 
-    fun saveAnswer(answer: Answer)
+    suspend fun saveAnswerList(answer: List<QuestionAndAnswer>)
 }

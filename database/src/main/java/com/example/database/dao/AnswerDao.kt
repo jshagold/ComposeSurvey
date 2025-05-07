@@ -11,6 +11,9 @@ interface AnswerDao {
     @Upsert
     suspend fun upsertAnswer(answer: AnswerEntity)
 
+    @Upsert
+    suspend fun upsetAnswerList(vararg answer: AnswerEntity)
+
     @Query("SELECT * FROM answer WHERE answerGroupId = :groupId")
     suspend fun getAnswerByGroupId(groupId: String): List<AnswerEntity>
 }

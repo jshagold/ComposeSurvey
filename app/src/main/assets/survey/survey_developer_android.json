@@ -2,33 +2,33 @@
   "title": "Android 개발자 설문조사",
   "questions": [
     {
-      "id": "q1",
+      "id": "1",
       "type": "TEXT",
       "question": "당신의 이름은?",
       "required": true
     },
     {
-      "id": "q2",
+      "id": "2",
       "type": "SINGLE_CHOICE",
       "question": "가장 많이 사용하는 언어는 무엇인가요?",
       "options": ["Kotlin", "Java", "C++", "Python"],
       "required": true
     },
     {
-      "id": "q3",
+      "id": "3",
       "type": "MULTIPLE_CHOICE",
       "question": "사용해본 Android 아키텍처 패턴을 모두 선택하세요.",
       "options": ["MVVM", "MVI", "MVC", "Clean Architecture", "MVP"]
     },
     {
-      "id": "q4",
+      "id": "4",
       "type": "SLIDER",
       "question": "경력 연차를 선택해주세요.",
       "min": 0,
       "max": 10
     },
     {
-      "id": "q5",
+      "id": "5",
       "type": "LIKERT_SCALE",
       "question": "본인의 실력을 평가해 주세요.",
       "scaleList": ["매우 못함", "못함", "보통", "잘함", "매우 잘함"]

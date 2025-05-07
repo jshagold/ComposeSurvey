@@ -2,6 +2,7 @@ package com.example.database.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -19,7 +20,8 @@ import androidx.room.PrimaryKey
             childColumns = ["questionId"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index(value = ["answerGroupId"], unique = true)]
 )
 data class AnswerEntity(
     @PrimaryKey(autoGenerate = true)

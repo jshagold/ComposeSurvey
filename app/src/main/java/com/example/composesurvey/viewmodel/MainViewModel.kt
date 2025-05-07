@@ -1,5 +1,6 @@
 package com.example.composesurvey.viewmodel
 
+import android.R.id.message
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.core.result.Result
 import com.example.domain.repository.SurveyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,10 +26,10 @@ class MainViewModel @Inject constructor(
 
             when(result) {
                 is Result.Failure -> {
-                    Log.e("saveSurveyToDBFromFile", "updateSurvey: Failure ${result.cause?.printStackTrace()}", )
+                    Napier.e(message = "Failed to update", throwable = result.cause)
                 }
                 is Result.Success -> {
-                    Log.d("TAG", "updateSurvey: Success")
+                    Napier.d(message = "update successful")
                 }
             }
         }

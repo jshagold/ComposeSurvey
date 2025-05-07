@@ -1,7 +1,7 @@
 package com.example.composesurvey.viewmodel
 
 import android.app.Application
-import android.util.Log.e
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -18,6 +18,7 @@ import com.example.composesurvey.view.state.SurveyCheckState
 import com.example.core.exception.FileException
 import com.example.core.exception.UnexpectedException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 @HiltViewModel
@@ -106,7 +106,7 @@ class SurveyViewModel @Inject constructor(
                 } else {
                     _surveyCheckState.update {
                         it.copy(
-                            errorCode = ErrorCode.NULLELEMENT
+                            errorCode = ErrorCode.NULL_ELEMENT
                         )
                     }
                 }
@@ -230,11 +230,22 @@ class SurveyViewModel @Inject constructor(
 
 
     fun saveSurveyResult() {
-        val value: List<QuestionAndAnswer> = surveyCheckState.value.questionNAnswerList.map { qnaUI ->
-            qnaUI.toQuestionAndAnswer()
-        }
-        val jsonValue = Json.encodeToString(value)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result: List<QuestionAndAnswer> = surveyCheckState.value.questionNAnswerList.map { qnaUI ->
+                qnaUI.toQuestionAndAnswer()
+            }
 
-        e("TAG", "saveSurveyResult: $jsonValue", )
+            try {
+                surveyRepository.saveSurveyResult(result)
+            } catch (e: Exception) {
+                Log.e("TAG", "saveSurveyResult: ${e.printStackTrace()}", )
+                Napier.e(message = "Failed to save data", throwable = e)
+                _surveyCheckState.update {
+                    it.copy(
+                        errorCode = ErrorCode.DB
+                    )
+                }
+            }
+        }
     }
 }

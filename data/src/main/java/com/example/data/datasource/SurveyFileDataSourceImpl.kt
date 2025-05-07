@@ -97,14 +97,12 @@ class SurveyFileDataSourceImpl @Inject constructor(
 
             fileList?.let {
                 it.forEach {
-                    Log.e("TAG", "getSurveyList: $it", )
                     val fileStream = assetManager.open("$assetFolder/$it")
                     surveyList.add(Json.Default.decodeFromStream<Survey>(fileStream))
                 }
             }
 
         } catch (e: IOException) {
-            Log.e("TAG", "getSurveyList: ${e.printStackTrace()}", )
             throw FileException("파일 에러", e)
         } catch (e: SerializationException) {
             throw FileException("Json decode 에러", e)
