@@ -23,7 +23,7 @@ import androidx.room.PrimaryKey
 )
 data class AnswerEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Long = 0,
 
     val surveyId: Long,
 
@@ -31,5 +31,5 @@ data class AnswerEntity(
 
     val answerGroupId: String,
     val answerValue: String,
-    val answeredAt: Long,
+    val answeredAt: Long = System.currentTimeMillis(),
 )

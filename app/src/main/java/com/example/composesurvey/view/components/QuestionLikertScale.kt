@@ -26,7 +26,8 @@ import com.example.composesurvey.model.QuestionUI
 @Composable
 fun PreviewQuestionLikertScale() {
     val question = QuestionUI(
-        id = "q5",
+        id = 0,
+        surveyId = 0,
         type = QuestionTypeUI.LIKERT_SCALE,
         question = "본인의 실력을 평가해 주세요.",
         scaleList = listOf("매우 못함", "못함", "보통", "잘함", "매우 잘함"),

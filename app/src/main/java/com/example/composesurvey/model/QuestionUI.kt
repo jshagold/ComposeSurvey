@@ -1,7 +1,8 @@
 package com.example.composesurvey.model
 
 data class QuestionUI(
-    val id: String,
+    val id: Long,
+    val surveyId: Long,
     val type: QuestionTypeUI,
     val question: String,
     val required: Boolean = false,

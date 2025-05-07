@@ -1,7 +1,8 @@
 package com.example.domain.model
 
 data class Question(
-    val id: String,
+    val id: Long,
+    val surveyId: Long,
     val type: QuestionType,
     val question: String,
     val required: Boolean = false,

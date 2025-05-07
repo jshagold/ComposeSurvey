@@ -30,7 +30,8 @@ import kotlin.math.round
 @Composable
 fun PreviewQuestionSlider() {
     val question = QuestionUI(
-        id = "q4",
+        id = 4,
+        surveyId = 0,
         type = QuestionTypeUI.SLIDER,
         question = "경력 연차를 선택해주세요.",
         min = 0,

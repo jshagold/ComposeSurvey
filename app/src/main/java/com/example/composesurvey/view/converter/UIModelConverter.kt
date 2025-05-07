@@ -12,6 +12,7 @@ import com.example.domain.model.QuestionType
 fun Question.toQuestionUI(): QuestionUI {
     return QuestionUI(
         id = this.id,
+        surveyId = this.surveyId,
         question = this.question,
         type = this.type.toQuestionTypeUI(),
         required = this.required,
@@ -62,6 +63,7 @@ fun QuestionAndAnswer.toQuestionAndAnswerUI(): QuestionAndAnswerUI {
 fun QuestionUI.toQuestion(): Question {
     return Question(
         id = this.id,
+        surveyId = this.surveyId,
         question = this.question,
         type = this.type.toQuestionType(),
         required = this.required,

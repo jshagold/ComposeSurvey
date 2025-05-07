@@ -27,7 +27,8 @@ import com.example.composesurvey.model.QuestionUI
 @Composable
 fun PreviewQuestionSingleChoice() {
     val question = QuestionUI(
-        id = "q2",
+        id = 2,
+        surveyId = 0,
         type = QuestionTypeUI.SINGLE_CHOICE,
         question = "가장 많이 사용하는 언어는 무엇인가요?",
         required = true,

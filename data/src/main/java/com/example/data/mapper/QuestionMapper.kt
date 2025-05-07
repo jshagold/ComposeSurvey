@@ -14,6 +14,7 @@ import com.example.domain.model.Question as QuestionDomain
 
 fun Question.toDomain() = QuestionDomain(
     id = this.id,
+    surveyId = this.surveyId,
     type = this.type.toDomain(),
     question = this.question,
     required = this.required,
@@ -25,6 +26,7 @@ fun Question.toDomain() = QuestionDomain(
 
 fun QuestionDomain.toData() = Question(
     id = this.id,
+    surveyId = this.surveyId,
     type = this.type.toData(),
     question = this.question,
     required = this.required,
@@ -56,7 +58,8 @@ fun Question.toEntity(surveyId: Long): QuestionEntity {
 
 fun QuestionEntity.toData(): Question {
     return Question(
-        id = this.id.toString(),
+        id = this.id,
+        surveyId = this.surveyId,
         type = QuestionType.valueOf(this.type),
         question = this.questionText,
         required = parseRequired(this.jsonOption),

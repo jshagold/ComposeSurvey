@@ -24,7 +24,8 @@ import com.example.composesurvey.model.QuestionUI
 @Composable
 fun PreviewQuestionText() {
     val question = QuestionUI(
-        id = "q1",
+        id = 1,
+        surveyId = 0,
         type = QuestionTypeUI.TEXT,
         question = "당신의 이름은?",
         required = true

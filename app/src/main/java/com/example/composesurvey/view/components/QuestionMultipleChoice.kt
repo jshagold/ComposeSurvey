@@ -27,7 +27,8 @@ import com.example.composesurvey.model.QuestionUI
 @Composable
 fun PreviewQuestionMultipleChoice() {
     val question = QuestionUI(
-        id = "q3",
+        id = 3,
+        surveyId = 0,
         type = QuestionTypeUI.MULTIPLE_CHOICE,
         question = "사용해본 Android 아키텍처 패턴을 모두 선택하세요.",
         options = listOf("MVVM", "MVI", "MVC", "Clean Architecture", "MVP")
