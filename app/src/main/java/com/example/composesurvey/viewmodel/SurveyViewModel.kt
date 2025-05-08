@@ -21,7 +21,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -38,9 +40,11 @@ class SurveyViewModel @Inject constructor(
     private val routeArgument: String = savedStateHandle["surveyId"] ?: "0"
     private val surveyId: Long = routeArgument.toLong()
 
-    private var _surveyCheckState: MutableStateFlow<SurveyCheckState> =
-        MutableStateFlow(SurveyCheckState())
+    private var _surveyCheckState: MutableStateFlow<SurveyCheckState> = MutableStateFlow(SurveyCheckState())
     val surveyCheckState: StateFlow<SurveyCheckState> = _surveyCheckState.asStateFlow()
+
+    private val _navigateToHome = MutableSharedFlow<Unit>(replay = 0)
+    val navigateToHome: SharedFlow<Unit> = _navigateToHome
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -237,6 +241,12 @@ class SurveyViewModel @Inject constructor(
 
             try {
                 surveyRepository.saveSurveyResult(result)
+
+                _surveyCheckState.update {
+                    it.copy(
+                        saveCompleteDialog = true
+                    )
+                }
             } catch (e: Exception) {
                 Log.e("TAG", "saveSurveyResult: ${e.printStackTrace()}", )
                 Napier.e(message = "Failed to save data", throwable = e)
@@ -246,6 +256,14 @@ class SurveyViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+
+    // SharedFlow Event
+    fun onConfirmSaveDialog() {
+        viewModelScope.launch {
+            _navigateToHome.emit(Unit)
         }
     }
 }

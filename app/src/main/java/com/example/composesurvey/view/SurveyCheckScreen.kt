@@ -12,29 +12,40 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.composesurvey.R
 import com.example.composesurvey.view.components.QuestionLikertScale
 import com.example.composesurvey.view.components.QuestionMultipleChoice
 import com.example.composesurvey.view.components.QuestionSingleChoice
 import com.example.composesurvey.view.components.QuestionSlider
 import com.example.composesurvey.view.components.QuestionText
 import com.example.composesurvey.model.AnswerUI
+import com.example.composesurvey.view.components.dialog.TextButtonDialog
 import com.example.composesurvey.view.state.SurveyCheckState
 import com.example.composesurvey.viewmodel.SurveyViewModel
 
 
 @Composable
 fun SurveyCheckRoute(
-    viewModel: SurveyViewModel = hiltViewModel()
+    viewModel: SurveyViewModel = hiltViewModel(),
+    navigateToSurveyList: () -> Unit
 ) {
     val state by viewModel.surveyCheckState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.navigateToHome.collect {
+            navigateToSurveyList()
+        }
+    }
 
     SurveyCheckScreen(
         state = state,
@@ -45,6 +56,13 @@ fun SurveyCheckRoute(
         questionLikertScaleChange = viewModel::questionLikertScaleChange,
         saveResult = viewModel::saveSurveyResult
     )
+
+    if(state.saveCompleteDialog) {
+        TextButtonDialog(
+            text = stringResource(R.string.survey_result_saved_complete),
+            onClickConfirmBtn = viewModel::onConfirmSaveDialog
+        )
+    }
 }
 
 

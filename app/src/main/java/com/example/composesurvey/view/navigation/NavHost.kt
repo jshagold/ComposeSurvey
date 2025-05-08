@@ -52,9 +52,9 @@ fun MainNavHost(
         composable(route = "${Route.CHECK}/{surveyId}") { navBackStackEntry ->
             val viewModel = navBackStackEntry.sharedViewModel<SurveyViewModel>(navController = navController)
 
-
-
-            SurveyCheckRoute()
+            SurveyCheckRoute(
+                navigateToSurveyList = { navController.navigateToSurveyList() }
+            )
         }
 
         composable(route = Route.STATISTICS) {

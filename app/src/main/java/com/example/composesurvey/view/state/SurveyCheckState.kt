@@ -6,5 +6,6 @@ import com.example.composesurvey.model.QuestionAndAnswerUI
 data class SurveyCheckState(
     val surveyTitle: String = "",
     val questionNAnswerList: List<QuestionAndAnswerUI> = listOf(),
-    val errorCode: ErrorCode = ErrorCode.NONE
+    val errorCode: ErrorCode = ErrorCode.NONE,
+    val saveCompleteDialog: Boolean = false
 )
