@@ -2,11 +2,11 @@ package com.example.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
+import androidx.room.Transaction
 import androidx.room.Upsert
 import com.example.database.model.QuestionEntity
+import com.example.database.model.QuestionWithAnswers
 
 @Dao
 interface QuestionDao {
@@ -27,5 +27,12 @@ interface QuestionDao {
     suspend fun getQuestionById(questionId: Long): QuestionEntity?
 
     @Query("SELECT * FROM question WHERE surveyId = :surveyId")
-    suspend fun getQuestionsBySurveyId(surveyId: Long): List<QuestionEntity>
+    suspend fun getQuestionListBySurveyId(surveyId: Long): List<QuestionEntity>
+
+    @Query("SELECT id FROM question WHERE surveyId = :surveyId")
+    suspend fun getQuestionIdListBySurveyId(surveyId: Long): List<Long>
+
+    @Transaction
+    @Query("SELECT * FROM question WHERE surveyId = :surveyId")
+    suspend fun getQuestionAndAnswerList(surveyId: Long): List<QuestionWithAnswers>
 }

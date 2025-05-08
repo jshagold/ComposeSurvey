@@ -6,7 +6,11 @@ object SurveyJson {
     const val MIN = "min"
     const val MAX = "max"
     const val SCALE_LIST = "scaleList"
+    const val TYPE = "type"
+    const val VALUE = "value"
+    const val SELECTED = "selected"
     object Type {
+        const val TEXT = "TEXT"
         const val SINGLE_CHOICE = "SINGLE_CHOICE"
         const val MULTIPLE_CHOICE = "MULTIPLE_CHOICE"
         const val SLIDER = "SLIDER"

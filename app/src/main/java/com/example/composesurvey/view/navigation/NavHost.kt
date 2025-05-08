@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.composesurvey.view.MainRoute
 import com.example.composesurvey.view.StatisticsListRoute
+import com.example.composesurvey.view.StatisticsRoute
 import com.example.composesurvey.view.SurveyCheckRoute
 import com.example.composesurvey.view.SurveyListRoute
 import com.example.composesurvey.viewmodel.SurveyViewModel
@@ -63,15 +64,15 @@ fun MainNavHost(
 
         composable(route = Route.STATISTICS_LIST) {
             StatisticsListRoute(
-                navigateToSurveyStatistics = {
-                    // todo
+                navigateToSurveyStatistics = { surveyId ->
+                    navController.navigateToSurveyStatistics(surveyId)
                 }
             )
         }
 
 
-        composable(route = Route.STATISTICS) {
-
+        composable(route = "${Route.STATISTICS}/{surveyId}") {
+            StatisticsRoute()
         }
 
     }

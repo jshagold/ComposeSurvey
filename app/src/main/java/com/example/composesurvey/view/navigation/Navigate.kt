@@ -24,3 +24,7 @@ fun NavController.navigateToSurveyCheck(surveyId: Long) {
 fun NavController.navigateToSurveyResultList() {
     this.navigate(Route.STATISTICS_LIST)
 }
+
+fun NavController.navigateToSurveyStatistics(surveyId: Long) {
+    this.navigate("${Route.STATISTICS}/$surveyId")
+}
