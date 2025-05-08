@@ -1,6 +1,5 @@
 package com.example.data.datasource
 
-import com.example.data.model.Answer
 import com.example.data.model.Question
 import com.example.data.model.QuestionAndAnswer
 import com.example.data.model.Survey
@@ -11,9 +10,11 @@ interface SurveyDBDataSource {
 
     suspend fun getSurveyList(): List<Survey>
 
-//    fun getSurveyTitleList(): List<Result<SurveyPreview>>
+    suspend fun isExistSurvey(title: String): Boolean
 
     suspend fun saveSurveyWithQuestions(survey: Survey)
+
+    suspend fun saveSurveyWithQuestionsIfNew(survey: Survey)
 
     fun saveSurvey(survey: Survey)
 

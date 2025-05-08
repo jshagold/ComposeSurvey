@@ -25,6 +25,9 @@ interface SurveyDao {
     @Query("SELECT * FROM survey WHERE id = :surveyId")
     suspend fun getSurveyById(surveyId: Long): SurveyEntity?
 
+    @Query("SELECT EXISTS(SELECT * FROM survey WHERE title = :surveyTitle)")
+    suspend fun isExistSurvey(surveyTitle: String): Boolean
+
     @Transaction
     @Query("SELECT * FROM survey")
     suspend fun getAllSurveyWithQuestions(): List<SurveyWithQuestions>

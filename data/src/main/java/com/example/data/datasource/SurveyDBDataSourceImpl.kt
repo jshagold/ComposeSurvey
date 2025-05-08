@@ -3,7 +3,6 @@ package com.example.data.datasource
 import androidx.room.withTransaction
 import com.example.data.mapper.toData
 import com.example.data.mapper.toEntity
-import com.example.data.model.Answer
 import com.example.data.model.Question
 import com.example.data.model.QuestionAndAnswer
 import com.example.data.model.Survey
@@ -45,6 +44,10 @@ class SurveyDBDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun isExistSurvey(title: String): Boolean {
+        return surveyDao.isExistSurvey(title)
+    }
+
     override suspend fun saveSurveyWithQuestions(
         survey: Survey
     ) {
@@ -53,6 +56,19 @@ class SurveyDBDataSourceImpl @Inject constructor(
             val questionEntityList = survey.questions.map { it.toEntity(surveyId) }
 
             questionDao.upsertQuestions(questionEntityList)
+        }
+    }
+
+    override suspend fun saveSurveyWithQuestionsIfNew(
+        survey: Survey
+    ) {
+        surveyDB.withTransaction {
+            if(!surveyDao.isExistSurvey(survey.title)) {
+                val surveyId = surveyDao.upsertSurvey(survey.toEntity())
+                val questionEntityList = survey.questions.map { it.toEntity(surveyId) }
+
+                questionDao.upsertQuestions(questionEntityList)
+            }
         }
     }
 

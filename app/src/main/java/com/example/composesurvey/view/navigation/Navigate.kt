@@ -6,7 +6,12 @@ import java.nio.charset.StandardCharsets
 
 
 fun NavController.navigateToSurveyList() {
-    this.navigate(Route.LIST)
+    val navController = this
+    navController.navigate(Route.LIST) {
+//        popUpTo(navController.graph.id) {
+//            inclusive = false
+//        }
+    }
 }
 
 

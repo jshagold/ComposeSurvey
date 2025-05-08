@@ -41,7 +41,7 @@ class SurveyRepositoryImpl @Inject constructor(
         return try {
             val surveyList: List<SurveyData> = surveyFileDataSource.getSurveyList()
             surveyList.forEach {
-                surveyDBDataSource.saveSurveyWithQuestions(it)
+                surveyDBDataSource.saveSurveyWithQuestionsIfNew(it)
             }
 
             Result.Success("success")
