@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.composesurvey.view.MainRoute
+import com.example.composesurvey.view.StatisticsListRoute
 import com.example.composesurvey.view.SurveyCheckRoute
 import com.example.composesurvey.view.SurveyListRoute
 import com.example.composesurvey.viewmodel.SurveyViewModel
@@ -36,7 +37,10 @@ fun MainNavHost(
         composable(route = Route.MAIN) {
             MainRoute(
                 navigateToSurveyList = {
-                    navController.navigateToSurveyList()
+                    navController.navigateToSurveyList(false)
+                },
+                navigateToSurveyResultList = {
+                    navController.navigateToSurveyResultList()
                 }
             )
         }
@@ -53,9 +57,18 @@ fun MainNavHost(
             val viewModel = navBackStackEntry.sharedViewModel<SurveyViewModel>(navController = navController)
 
             SurveyCheckRoute(
-                navigateToSurveyList = { navController.navigateToSurveyList() }
+                navigateToSurveyList = { navController.navigateToSurveyList(true) }
             )
         }
+
+        composable(route = Route.STATISTICS_LIST) {
+            StatisticsListRoute(
+                navigateToSurveyStatistics = {
+                    // todo
+                }
+            )
+        }
+
 
         composable(route = Route.STATISTICS) {
 

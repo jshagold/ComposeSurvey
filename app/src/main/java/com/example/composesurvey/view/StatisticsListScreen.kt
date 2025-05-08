@@ -23,42 +23,42 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.composesurvey.view.components.extension.noRippleClickable
-import com.example.composesurvey.view.state.SurveyListState
-import com.example.composesurvey.viewmodel.SurveyListViewModel
+import com.example.composesurvey.view.state.SurveyResultListState
+import com.example.composesurvey.viewmodel.SurveyStatisticsListViewModel
 import com.example.core.result.Result
 
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
 @Composable
-fun PreviewSurveyListScreen() {
-    SurveyListScreen(
-        uiState = SurveyListState()
+fun PreviewStatisticsListScreen() {
+    StatisticsListScreen(
+        uiState = SurveyResultListState()
     )
 }
 
-
 @Composable
-fun SurveyListRoute(
+fun StatisticsListRoute(
     modifier: Modifier = Modifier,
-    viewModel: SurveyListViewModel = hiltViewModel(),
-    navigateToSurveyCheck: (surveyId: Long) -> Unit = {},
+    viewModel: SurveyStatisticsListViewModel = hiltViewModel(),
+    navigateToSurveyStatistics: (surveyId: Long) -> Unit = {},
 ) {
 
-    val uiState by viewModel.surveyListState.collectAsStateWithLifecycle()
+    val uiState by viewModel.surveyResultListState.collectAsStateWithLifecycle()
 
-    SurveyListScreen(
+    StatisticsListScreen(
+        modifier = modifier,
         uiState = uiState,
-        navigateToSurveyCheck = navigateToSurveyCheck,
-        modifier = modifier
+        navigateToSurveyStatistics = navigateToSurveyStatistics
     )
 }
 
 
+
 @Composable
-fun SurveyListScreen(
+fun StatisticsListScreen(
     modifier: Modifier = Modifier,
-    uiState: SurveyListState,
-    navigateToSurveyCheck: (surveyId: Long) -> Unit = {},
+    uiState: SurveyResultListState,
+    navigateToSurveyStatistics: (surveyId: Long) -> Unit = {},
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
@@ -83,7 +83,7 @@ fun SurveyListScreen(
                             .fillMaxWidth()
                             .border(1.dp, Black, RoundedCornerShape(10.dp))
                             .noRippleClickable {
-                                navigateToSurveyCheck(resultTitle.data.id)
+                                navigateToSurveyStatistics(resultTitle.data.id)
                             }
                             .padding(10.dp)
 

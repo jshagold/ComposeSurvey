@@ -16,12 +16,14 @@ import com.example.composesurvey.viewmodel.MainViewModel
 fun MainRoute(
     modifier: Modifier = Modifier,
     navigateToSurveyList: () -> Unit = {},
+    navigateToSurveyResultList: () -> Unit = {},
     viewModel: MainViewModel = hiltViewModel()
 ) {
 
 
     MainScreen(
         navigateToSurveyList = navigateToSurveyList,
+        navigateToSurveyResultList = navigateToSurveyResultList,
         updateSurveyFromFile = viewModel::updateSurvey
     )
 }
@@ -31,6 +33,7 @@ fun MainRoute(
 fun MainScreen(
     modifier: Modifier = Modifier,
     navigateToSurveyList: () -> Unit = {},
+    navigateToSurveyResultList: () -> Unit = {},
     updateSurveyFromFile: () -> Unit = {},
 ) {
     Column(
@@ -45,6 +48,16 @@ fun MainScreen(
         ) {
             Text(
                 text = "ToSurveyList"
+            )
+        }
+
+        Button(
+            onClick = navigateToSurveyResultList,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+        ) {
+            Text(
+                text = "ToSurveyResult"
             )
         }
 

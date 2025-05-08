@@ -8,6 +8,7 @@ import com.example.composesurvey.mapper.toUI
 import com.example.composesurvey.model.SurveyUI
 import com.example.composesurvey.view.error.ErrorCode
 import com.example.composesurvey.view.state.SurveyListState
+import com.example.composesurvey.view.state.SurveyResultListState
 import com.example.core.exception.FileException
 import com.example.core.exception.UnexpectedException
 import com.example.core.result.Result
@@ -24,7 +25,7 @@ import javax.inject.Inject
 import com.example.domain.model.Survey as SurveyDomain
 
 @HiltViewModel
-class SurveyListViewModel @Inject constructor(
+class SurveyStatisticsListViewModel @Inject constructor(
     application: Application,
     val surveyRepository: SurveyRepository
 ) : AndroidViewModel(application) {
@@ -44,21 +45,21 @@ class SurveyListViewModel @Inject constructor(
                     }
                 }
 
-                _surveyListState.update {
+                _surveyResultListState.update {
                     it.copy(
                         surveyList = resultSurveyList
                     )
                 }
             } catch (e: FileException) {
                 Napier.e(message = "init", throwable = e)
-                _surveyListState.update {
+                _surveyResultListState.update {
                     it.copy(
                         errorCode = ErrorCode.FILE
                     )
                 }
             } catch (e: UnexpectedException) {
                 Napier.e(message = "init", throwable = e)
-                _surveyListState.update {
+                _surveyResultListState.update {
                     it.copy(
                         errorCode = ErrorCode.UNEXPECTED
                     )
@@ -67,7 +68,8 @@ class SurveyListViewModel @Inject constructor(
         }
     }
 
-    private var _surveyListState: MutableStateFlow<SurveyListState> = MutableStateFlow(SurveyListState())
-    val surveyListState: StateFlow<SurveyListState> = _surveyListState.asStateFlow()
+    private var _surveyResultListState: MutableStateFlow<SurveyResultListState> = MutableStateFlow(SurveyResultListState())
+    val surveyResultListState: StateFlow<SurveyResultListState> = _surveyResultListState.asStateFlow()
+
 
 }
