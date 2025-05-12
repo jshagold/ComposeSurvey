@@ -6,7 +6,7 @@ import com.example.data.mapper.toData
 import com.example.data.mapper.toEntity
 import com.example.data.model.Answer
 import com.example.data.model.Question
-import com.example.data.model.QuestionAndAnswer
+import com.example.data.model.QuestionWithAnswer
 import com.example.data.model.Survey
 import com.example.database.SurveyDatabase
 import com.example.database.dao.AnswerDao
@@ -16,7 +16,6 @@ import com.example.database.model.AnswerEntity
 import io.github.aakira.napier.Napier
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import java.util.UUID
 import javax.inject.Inject
@@ -86,7 +85,7 @@ class SurveyDBDataSourceImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveAnswerList(answer: List<QuestionAndAnswer>) {
+    override suspend fun saveAnswerList(answer: List<QuestionWithAnswer>) {
         val uuid = UUID.randomUUID().toString()
         val answerList = answer.map {
             AnswerEntity(
@@ -108,10 +107,10 @@ class SurveyDBDataSourceImpl @Inject constructor(
         return questionDao.getQuestionListBySurveyId(surveyId).map { it.toData() }
     }
 
-    override suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionAndAnswer> {
+    override suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer> {
         return questionDao.getQuestionAndAnswerList(surveyId).flatMap { questionWithAnswerList ->
             questionWithAnswerList.answers.map { answerEntity ->
-                QuestionAndAnswer(
+                QuestionWithAnswer(
                     question = questionWithAnswerList.question.toData(),
                     answer = answerEntity.toData()
                 )

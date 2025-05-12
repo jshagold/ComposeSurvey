@@ -7,7 +7,7 @@ import com.example.data.datasource.SurveyDBDataSource
 import com.example.data.datasource.SurveyFileDataSource
 import com.example.data.mapper.toData
 import com.example.data.mapper.toDomain
-import com.example.domain.model.QuestionAndAnswer
+import com.example.domain.model.QuestionWithAnswer
 import com.example.domain.model.Survey
 import com.example.domain.model.SurveyPreview
 import com.example.domain.model.SurveyResult
@@ -54,7 +54,7 @@ class SurveyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveSurveyResult(result: List<QuestionAndAnswer>) {
+    override suspend fun saveSurveyResult(result: List<QuestionWithAnswer>) {
         val resultData = result.map { it.toData() }
 
         surveyDBDataSource.saveAnswerList(resultData)
@@ -65,7 +65,7 @@ class SurveyRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionAndAnswer> {
+    override suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer> {
         return surveyDBDataSource.getQuestionAndAnswerListBySurveyId(surveyId).map { it.toDomain() }
     }
 

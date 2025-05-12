@@ -14,11 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.domain.model.Answer
-import com.example.domain.model.Question
-import com.example.domain.model.QuestionType
 import com.example.composesurvey.model.AnswerUI
-import com.example.composesurvey.model.QuestionAndAnswerUI
+import com.example.composesurvey.model.QuestionWithAnswerUI
 import com.example.composesurvey.model.QuestionTypeUI
 import com.example.composesurvey.model.QuestionUI
 
@@ -35,7 +32,7 @@ fun PreviewQuestionSingleChoice() {
         options = listOf("Kotlin", "Java", "C++", "Python")
     )
 
-    val qna = QuestionAndAnswerUI(
+    val qna = QuestionWithAnswerUI(
         question = question,
         answer = AnswerUI.SingleChoice("Kotlin")
     )
@@ -47,7 +44,7 @@ fun PreviewQuestionSingleChoice() {
         question = rem.value.question,
         answer = rem.value.answer as AnswerUI.SingleChoice,
         onClickCheckBox = { key ->
-            rem.value = QuestionAndAnswerUI(
+            rem.value = QuestionWithAnswerUI(
                 question = question,
                 answer = AnswerUI.SingleChoice(key)
             )

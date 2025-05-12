@@ -3,7 +3,7 @@ package com.example.data.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class QuestionAndAnswer(
+data class QuestionWithAnswer(
     val question: Question,
     val answer: Answer
 )

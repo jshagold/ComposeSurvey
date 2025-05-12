@@ -1,11 +1,11 @@
 package com.example.composesurvey.view.state
 
 import com.example.composesurvey.view.error.ErrorCode
-import com.example.composesurvey.model.QuestionAndAnswerUI
+import com.example.composesurvey.model.QuestionWithAnswerUI
 
 data class SurveyCheckState(
     val surveyTitle: String = "",
-    val questionNAnswerList: List<QuestionAndAnswerUI> = listOf(),
+    val questionNAnswerList: List<QuestionWithAnswerUI> = listOf(),
     val errorCode: ErrorCode = ErrorCode.NONE,
     val saveCompleteDialog: Boolean = false
 )

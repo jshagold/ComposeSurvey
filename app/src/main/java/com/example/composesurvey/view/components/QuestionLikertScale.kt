@@ -13,11 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.domain.model.Answer
-import com.example.domain.model.Question
-import com.example.domain.model.QuestionType
 import com.example.composesurvey.model.AnswerUI
-import com.example.composesurvey.model.QuestionAndAnswerUI
+import com.example.composesurvey.model.QuestionWithAnswerUI
 import com.example.composesurvey.model.QuestionTypeUI
 import com.example.composesurvey.model.QuestionUI
 
@@ -32,7 +29,7 @@ fun PreviewQuestionLikertScale() {
         question = "본인의 실력을 평가해 주세요.",
         scaleList = listOf("매우 못함", "못함", "보통", "잘함", "매우 잘함"),
     )
-    val qna = QuestionAndAnswerUI(
+    val qna = QuestionWithAnswerUI(
         question,
         AnswerUI.LikertScale(0)
     )
@@ -43,7 +40,7 @@ fun PreviewQuestionLikertScale() {
         question = rem.value.question,
         answer = rem.value.answer as AnswerUI.LikertScale,
         onValueChange = { value ->
-            rem.value = QuestionAndAnswerUI(
+            rem.value = QuestionWithAnswerUI(
                 question,
                 AnswerUI.LikertScale(value)
             )

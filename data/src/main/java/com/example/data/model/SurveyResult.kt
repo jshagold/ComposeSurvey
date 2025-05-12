@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SurveyResult(
     val title: String,
-    val result: List<QuestionAndAnswer>
+    val result: List<QuestionWithAnswer>
 )

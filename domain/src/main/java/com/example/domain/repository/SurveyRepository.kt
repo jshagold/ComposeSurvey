@@ -1,7 +1,7 @@
 package com.example.domain.repository
 
 import com.example.core.result.Result
-import com.example.domain.model.QuestionAndAnswer
+import com.example.domain.model.QuestionWithAnswer
 import com.example.domain.model.Survey
 import com.example.domain.model.SurveyPreview
 import com.example.domain.model.SurveyResult
@@ -18,10 +18,10 @@ interface SurveyRepository {
 
     suspend fun saveSurveyToDBFromFile(): Result<String>
 
-    suspend fun saveSurveyResult(result: List<QuestionAndAnswer>)
+    suspend fun saveSurveyResult(result: List<QuestionWithAnswer>)
 
     fun exportSurveyResult(result: SurveyResult)
 
 
-    suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionAndAnswer>
+    suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer>
 }

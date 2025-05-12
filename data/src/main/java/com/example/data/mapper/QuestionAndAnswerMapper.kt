@@ -1,14 +1,14 @@
 package com.example.data.mapper
 
-import com.example.data.model.QuestionAndAnswer
-import com.example.domain.model.QuestionAndAnswer as QuestionAndAnswerDomain
+import com.example.data.model.QuestionWithAnswer
+import com.example.domain.model.QuestionWithAnswer as QuestionWithAnswerDomain
 
-fun QuestionAndAnswer.toDomain() = QuestionAndAnswerDomain(
+fun QuestionWithAnswer.toDomain() = QuestionWithAnswerDomain(
     question = this.question.toDomain(),
     answer = this.answer.toDomain()
 )
 
-fun QuestionAndAnswerDomain.toData() = QuestionAndAnswer(
+fun QuestionWithAnswerDomain.toData() = QuestionWithAnswer(
     question = this.question.toData(),
     answer = this.answer.toData()
 )

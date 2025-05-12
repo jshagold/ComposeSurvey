@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.composesurvey.model.QuestionAndAnswerUI
+import com.example.composesurvey.model.QuestionWithAnswerUI
 import com.example.composesurvey.viewmodel.SurveyStatisticsViewModel
 
 
@@ -37,7 +37,7 @@ fun StatisticsRoute(
 
 @Composable
 fun StatisticsScreen(
-    qnaList: List<QuestionAndAnswerUI>
+    qnaList: List<QuestionWithAnswerUI>
 ) {
     Column(
         modifier = Modifier

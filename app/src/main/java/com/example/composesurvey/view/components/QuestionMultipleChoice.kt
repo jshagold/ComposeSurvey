@@ -14,11 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.domain.model.Answer
-import com.example.domain.model.Question
-import com.example.domain.model.QuestionType
 import com.example.composesurvey.model.AnswerUI
-import com.example.composesurvey.model.QuestionAndAnswerUI
+import com.example.composesurvey.model.QuestionWithAnswerUI
 import com.example.composesurvey.model.QuestionTypeUI
 import com.example.composesurvey.model.QuestionUI
 
@@ -33,7 +30,7 @@ fun PreviewQuestionMultipleChoice() {
         question = "사용해본 Android 아키텍처 패턴을 모두 선택하세요.",
         options = listOf("MVVM", "MVI", "MVC", "Clean Architecture", "MVP")
     )
-    val qna = QuestionAndAnswerUI(
+    val qna = QuestionWithAnswerUI(
         question,
         AnswerUI.MultipleChoice(listOf("MVI", "MVP"))
     )
@@ -51,7 +48,7 @@ fun PreviewQuestionMultipleChoice() {
                 muList.add(key)
             }
 
-            rem.value = QuestionAndAnswerUI(
+            rem.value = QuestionWithAnswerUI(
                 question,
                 AnswerUI.MultipleChoice(muList)
             )

@@ -2,7 +2,7 @@ package com.example.data.datasource
 
 import com.example.data.model.Answer
 import com.example.data.model.Question
-import com.example.data.model.QuestionAndAnswer
+import com.example.data.model.QuestionWithAnswer
 import com.example.data.model.Survey
 
 interface SurveyDBDataSource {
@@ -21,13 +21,13 @@ interface SurveyDBDataSource {
 
     fun saveQuestion(question: Question)
 
-    suspend fun saveAnswerList(answer: List<QuestionAndAnswer>)
+    suspend fun saveAnswerList(answer: List<QuestionWithAnswer>)
 
     suspend fun getQuestionIdListBySurveyId(surveyId: Long): List<Long>
 
     suspend fun getQuestionListBySurveyId(surveyId: Long): List<Question>
 
-    suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionAndAnswer>
+    suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer>
 
     suspend fun getAnswerListBySurveyNQuestionId(surveyId: Long, questionId: Long): List<Answer>
 }

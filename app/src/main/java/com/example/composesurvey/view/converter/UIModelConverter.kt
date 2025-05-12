@@ -2,9 +2,9 @@ package com.example.composesurvey.view.converter
 
 import com.example.domain.model.Answer
 import com.example.domain.model.Question
-import com.example.domain.model.QuestionAndAnswer
+import com.example.domain.model.QuestionWithAnswer
 import com.example.composesurvey.model.AnswerUI
-import com.example.composesurvey.model.QuestionAndAnswerUI
+import com.example.composesurvey.model.QuestionWithAnswerUI
 import com.example.composesurvey.model.QuestionTypeUI
 import com.example.composesurvey.model.QuestionUI
 import com.example.domain.model.QuestionType
@@ -53,8 +53,8 @@ fun Answer.toAnswerUI(): AnswerUI {
     }
 }
 
-fun QuestionAndAnswer.toQuestionAndAnswerUI(): QuestionAndAnswerUI {
-    return QuestionAndAnswerUI(
+fun QuestionWithAnswer.toQuestionAndAnswerUI(): QuestionWithAnswerUI {
+    return QuestionWithAnswerUI(
         question = this.question.toQuestionUI(),
         answer = this.answer.toAnswerUI()
     )
@@ -84,8 +84,8 @@ fun AnswerUI.toAnswer(): Answer {
     }
 }
 
-fun QuestionAndAnswerUI.toQuestionAndAnswer(): QuestionAndAnswer {
-    return QuestionAndAnswer(
+fun QuestionWithAnswerUI.toQuestionAndAnswer(): QuestionWithAnswer {
+    return QuestionWithAnswer(
         question = this.question.toQuestion(),
         answer = this.answer.toAnswer()
     )
