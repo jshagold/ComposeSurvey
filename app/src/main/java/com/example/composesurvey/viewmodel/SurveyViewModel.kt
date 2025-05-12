@@ -5,18 +5,18 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.domain.repository.SurveyRepository
-import com.example.domain.model.QuestionWithAnswer
-import com.example.domain.model.QuestionType
-import com.example.domain.model.Survey
-import com.example.composesurvey.view.converter.toQuestionAndAnswer
-import com.example.composesurvey.view.converter.toQuestionUI
-import com.example.composesurvey.view.error.ErrorCode
+import com.example.composesurvey.mapper.toDomain
+import com.example.composesurvey.mapper.toUI
 import com.example.composesurvey.model.AnswerUI
 import com.example.composesurvey.model.QuestionWithAnswerUI
+import com.example.composesurvey.view.error.ErrorCode
 import com.example.composesurvey.view.state.SurveyCheckState
 import com.example.core.exception.FileException
 import com.example.core.exception.UnexpectedException
+import com.example.domain.model.QuestionType
+import com.example.domain.model.QuestionWithAnswer
+import com.example.domain.model.Survey
+import com.example.domain.repository.SurveyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +61,7 @@ class SurveyViewModel @Inject constructor(
                         when (question.type) {
                             QuestionType.TEXT -> {
                                 QuestionWithAnswerUI(
-                                    question = question.toQuestionUI(),
+                                    question = question.toUI(),
                                     answer = AnswerUI.Text("")
                                 )
                             }
@@ -69,7 +69,7 @@ class SurveyViewModel @Inject constructor(
                             QuestionType.SINGLE_CHOICE -> {
                                 if (question.options == null) throw FileException(msg = "json element null - single choice")
                                 QuestionWithAnswerUI(
-                                    question = question.toQuestionUI(),
+                                    question = question.toUI(),
                                     answer = AnswerUI.SingleChoice("")
                                 )
                             }
@@ -77,7 +77,7 @@ class SurveyViewModel @Inject constructor(
                             QuestionType.MULTIPLE_CHOICE -> {
                                 if (question.options == null) throw FileException(msg = "json element null - multiple choice")
                                 QuestionWithAnswerUI(
-                                    question = question.toQuestionUI(),
+                                    question = question.toUI(),
                                     answer = AnswerUI.MultipleChoice(listOf())
                                 )
                             }
@@ -85,7 +85,7 @@ class SurveyViewModel @Inject constructor(
                             QuestionType.SLIDER -> {
                                 if (question.min == null && question.max == null) throw FileException(msg = "json element null - slider")
                                 QuestionWithAnswerUI(
-                                    question = question.toQuestionUI(),
+                                    question = question.toUI(),
                                     answer = AnswerUI.Slider(0)
                                 )
                             }
@@ -93,7 +93,7 @@ class SurveyViewModel @Inject constructor(
                             QuestionType.LIKERT_SCALE -> {
                                 if (question.scaleList == null) throw FileException(msg = "json element null - likert scale")
                                 QuestionWithAnswerUI(
-                                    question = question.toQuestionUI(),
+                                    question = question.toUI(),
                                     answer = AnswerUI.LikertScale(0)
                                 )
                             }
@@ -235,7 +235,7 @@ class SurveyViewModel @Inject constructor(
     fun saveSurveyResult() {
         viewModelScope.launch(Dispatchers.IO) {
             val result: List<QuestionWithAnswer> = surveyCheckState.value.questionNAnswerList.map { qnaUI ->
-                qnaUI.toQuestionAndAnswer()
+                qnaUI.toDomain()
             }
 
             try {
