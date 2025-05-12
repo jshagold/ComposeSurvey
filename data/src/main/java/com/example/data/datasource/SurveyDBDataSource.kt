@@ -27,7 +27,7 @@ interface SurveyDBDataSource {
 
     suspend fun getQuestionListBySurveyId(surveyId: Long): List<Question>
 
-    suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer>
+    suspend fun getQuestionWithAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer>
 
     suspend fun getAnswerListBySurveyNQuestionId(surveyId: Long, questionId: Long): List<Answer>
 }

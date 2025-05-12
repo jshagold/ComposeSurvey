@@ -23,5 +23,5 @@ interface SurveyRepository {
     fun exportSurveyResult(result: SurveyResult)
 
 
-    suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer>
+    suspend fun getQuestionWithAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer>
 }

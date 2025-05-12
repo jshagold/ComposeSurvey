@@ -65,8 +65,8 @@ class SurveyRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer> {
-        return surveyDBDataSource.getQuestionAndAnswerListBySurveyId(surveyId).map { it.toDomain() }
+    override suspend fun getQuestionWithAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer> {
+        return surveyDBDataSource.getQuestionWithAnswerListBySurveyId(surveyId).map { it.toDomain() }
     }
 
 }

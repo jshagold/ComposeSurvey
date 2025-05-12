@@ -35,7 +35,7 @@ class SurveyStatisticsViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.update {
-                surveyRepository.getQuestionAndAnswerListBySurveyId(surveyId = surveyId).map { it.toUI() }
+                surveyRepository.getQuestionWithAnswerListBySurveyId(surveyId = surveyId).map { it.toUI() }
             }
         }
     }

@@ -34,5 +34,5 @@ interface QuestionDao {
 
     @Transaction
     @Query("SELECT * FROM question WHERE surveyId = :surveyId")
-    suspend fun getQuestionAndAnswerList(surveyId: Long): List<QuestionWithAnswers>
+    suspend fun getQuestionWithAnswerList(surveyId: Long): List<QuestionWithAnswers>
 }

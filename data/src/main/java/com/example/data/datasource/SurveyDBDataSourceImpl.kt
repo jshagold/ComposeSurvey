@@ -107,8 +107,8 @@ class SurveyDBDataSourceImpl @Inject constructor(
         return questionDao.getQuestionListBySurveyId(surveyId).map { it.toData() }
     }
 
-    override suspend fun getQuestionAndAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer> {
-        return questionDao.getQuestionAndAnswerList(surveyId).flatMap { questionWithAnswerList ->
+    override suspend fun getQuestionWithAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer> {
+        return questionDao.getQuestionWithAnswerList(surveyId).flatMap { questionWithAnswerList ->
             questionWithAnswerList.answers.map { answerEntity ->
                 QuestionWithAnswer(
                     question = questionWithAnswerList.question.toData(),
