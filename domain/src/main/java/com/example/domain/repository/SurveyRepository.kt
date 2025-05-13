@@ -1,6 +1,7 @@
 package com.example.domain.repository
 
 import com.example.core.result.Result
+import com.example.domain.model.Question
 import com.example.domain.model.QuestionWithAnswer
 import com.example.domain.model.Survey
 import com.example.domain.model.SurveyPreview
@@ -22,6 +23,17 @@ interface SurveyRepository {
 
     fun exportSurveyResult(result: SurveyResult)
 
+    /**
+     * Text - List(Answer)
+     * Single Choice - List(Element, Count)
+     * Multiple Choice - List(Element, Count)
+     * Slide - List(Value, Count)
+     * Likert Scale - List(Value, Count)
+     */
+    suspend fun getStatisticsDataFromSurvey(surveyId: Long): LinkedHashMap<Question, Map<String, Int>>
 
     suspend fun getQuestionWithAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer>
+
+
+
 }
