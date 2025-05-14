@@ -1,9 +1,5 @@
 package com.example.composesurvey.view.components.chart.pie
 
-import android.R.attr.angle
-import android.R.attr.radius
-import android.R.attr.text
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,18 +19,25 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.drawText
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import com.example.composesurvey.view.components.chart.LabelText
+import com.example.composesurvey.view.components.chart.getCenterCoordinatesFromAngle
 import com.example.composesurvey.view.theme.GraphColors
 import kotlin.math.PI
 import kotlin.math.atan2
@@ -42,7 +45,7 @@ import kotlin.math.atan2
 @Preview
 @Composable
 fun PreviewPieChart() {
-    var selectedData: Int? = remember { 1 }
+    var selectedData by remember { mutableStateOf(2) }
 
     PieChart(
         dataList = listOf(
@@ -111,10 +114,22 @@ fun PieChart(
                     }
                 }
         ) {
+            var canvasSize by remember { mutableStateOf(Size.Zero) }
+            var tooltipSize by remember { mutableStateOf(IntSize.Zero) }
+            var measuredOnce by remember { mutableStateOf(false) }
+
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
+                    .onGloballyPositioned { coordinates ->
+                        val newSize = coordinates.size.toSize()
+                        if(canvasSize != newSize) {
+                            canvasSize = newSize
+                        }
+                    }
             ) {
+                canvasSize = size
+
                 chartDataList.forEach { data ->
                     drawArc(
                         color = data.color,
@@ -138,16 +153,31 @@ fun PieChart(
                 }
             }
 
+
+
             if(selectedDataIndex != null) {
+                val selectedData = chartDataList[selectedDataIndex]
+                val centerAngle = selectedData.startAngle + selectedData.sweepAngle / 2
+                val targetOffset = getCenterCoordinatesFromAngle(canvasSize.width/4, Offset(canvasSize.width / 2f, canvasSize.height / 2f), centerAngle)
+
                 Text(
                     text = "${chartDataList[selectedDataIndex].count}개",
                     modifier = Modifier
+                        .onGloballyPositioned { coordinates ->
+                            if(!measuredOnce) {
+                                val newSize = coordinates.size
+                                if(tooltipSize != newSize) {
+                                    tooltipSize = newSize
+                                }
+                                measuredOnce = true
+                            }
+                        }
+                        .offset {
+                            IntOffset(targetOffset.x.toInt() - tooltipSize.width/2, targetOffset.y.toInt() - tooltipSize.height/2)
+                        }
                         .background(Color.White, RoundedCornerShape(3.dp))
                         .border(1.dp, Color.Black, RoundedCornerShape(3.dp))
                         .padding(10.dp)
-                        .offset {
-                            IntOffset(0, 0)
-                        }
                 )
             }
         }
