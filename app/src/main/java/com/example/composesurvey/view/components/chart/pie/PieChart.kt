@@ -13,9 +13,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -31,6 +35,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -115,8 +120,6 @@ fun PieChart(
                 }
         ) {
             var canvasSize by remember { mutableStateOf(Size.Zero) }
-            var tooltipSize by remember { mutableStateOf(IntSize.Zero) }
-            var measuredOnce by remember { mutableStateOf(false) }
 
             Canvas(
                 modifier = Modifier
@@ -146,9 +149,7 @@ fun PieChart(
                         startAngle = chartDataList[selectedDataIndex].startAngle,
                         sweepAngle = chartDataList[selectedDataIndex].sweepAngle,
                         useCenter = true,
-                        style = Stroke(
-                            width = 10f
-                        )
+                        style = Stroke(width = 10f)
                     )
                 }
             }
@@ -160,24 +161,22 @@ fun PieChart(
                 val centerAngle = selectedData.startAngle + selectedData.sweepAngle / 2
                 val targetOffset = getCenterCoordinatesFromAngle(canvasSize.width/4, Offset(canvasSize.width / 2f, canvasSize.height / 2f), centerAngle)
 
+
+
                 Text(
-                    text = "${chartDataList[selectedDataIndex].count}개",
+                    text = "${selectedData.count}개",
+                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .onGloballyPositioned { coordinates ->
-                            if(!measuredOnce) {
-                                val newSize = coordinates.size
-                                if(tooltipSize != newSize) {
-                                    tooltipSize = newSize
-                                }
-                                measuredOnce = true
-                            }
-                        }
+                        .width(40.dp)
+                        .height(30.dp)
+                        .wrapContentHeight(Alignment.CenterVertically)
                         .offset {
-                            IntOffset(targetOffset.x.toInt() - tooltipSize.width/2, targetOffset.y.toInt() - tooltipSize.height/2)
+                            with(this) {
+                                IntOffset(targetOffset.x.toInt() - (40.dp).toPx().toInt()/2, targetOffset.y.toInt() - (20.dp).toPx().toInt()/2)
+                            }
                         }
                         .background(Color.White, RoundedCornerShape(3.dp))
                         .border(1.dp, Color.Black, RoundedCornerShape(3.dp))
-                        .padding(10.dp)
                 )
             }
         }
