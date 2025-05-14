@@ -38,7 +38,7 @@ fun MainNavHost(
         composable(route = Route.MAIN) {
             MainRoute(
                 navigateToSurveyList = {
-                    navController.navigateToSurveyList(false)
+                    navController.navigateToSurveyList()
                 },
                 navigateToSurveyResultList = {
                     navController.navigateToSurveyResultList()
@@ -58,7 +58,7 @@ fun MainNavHost(
             val viewModel = navBackStackEntry.sharedViewModel<SurveyViewModel>(navController = navController)
 
             SurveyCheckRoute(
-                navigateToSurveyList = { navController.navigateToSurveyList(true) }
+                navigateToSurveyList = { navController.navigateToSurveyList() }
             )
         }
 

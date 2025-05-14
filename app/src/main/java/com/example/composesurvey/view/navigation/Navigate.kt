@@ -1,18 +1,17 @@
 package com.example.composesurvey.view.navigation
 
+import android.util.Log
 import androidx.navigation.NavController
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 
-fun NavController.navigateToSurveyList(popUpBack: Boolean) {
-    val navController = this
-    navController.navigate(Route.LIST) {
-        if(popUpBack) {
-            popUpTo(navController.graph.id) {
-                this.inclusive = false
-            }
+fun NavController.navigateToSurveyList() {
+    this.navigate(Route.LIST) {
+        popUpTo(Route.LIST) {
+            this.inclusive = false
         }
+        launchSingleTop = true
     }
 }
 
