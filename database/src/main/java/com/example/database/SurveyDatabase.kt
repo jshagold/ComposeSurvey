@@ -15,7 +15,7 @@ import com.example.database.model.SurveyEntity
         QuestionEntity::class,
         AnswerEntity::class,
     ],
-    version = 1
+    version = 2
 )
 abstract class SurveyDatabase : RoomDatabase() {
     abstract fun surveyDao(): SurveyDao

@@ -21,7 +21,6 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["answerGroupId"], unique = true)]
 )
 data class AnswerEntity(
     @PrimaryKey(autoGenerate = true)

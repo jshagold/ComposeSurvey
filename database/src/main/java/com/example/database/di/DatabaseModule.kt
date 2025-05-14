@@ -2,6 +2,7 @@ package com.example.database.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.database.MIGRATION_1_2
 import com.example.database.SurveyDatabase
 import dagger.Module
 import dagger.Provides
@@ -22,6 +23,8 @@ object DatabaseModule {
         context = context,
         klass = SurveyDatabase::class.java,
         name = "survey-database"
-    ).build()
+    )
+        .addMigrations(MIGRATION_1_2)
+        .build()
 
 }
