@@ -102,7 +102,7 @@ fun StatisticsScreen(
                     )
 
                     StackBarChart(
-                        dataList = map.map { (k, v) -> Pair(k, v) },
+                        dataList = map.map { (k, v) -> Pair(k, v) }.sortedByDescending { (k, v) -> v },
                         chartHeight = 100.dp,
                         colorList = GraphColors,
                         modifier = Modifier

@@ -125,7 +125,8 @@ fun StackBarChart(
 
         FlowRow(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(20.dp)
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             dataList.forEachIndexed { index, data ->
                 LabelText(

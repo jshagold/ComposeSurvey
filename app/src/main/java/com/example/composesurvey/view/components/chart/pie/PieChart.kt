@@ -188,7 +188,8 @@ fun PieChart(
 
         FlowRow(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(20.dp)
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             chartDataList.forEachIndexed { index, data ->
                 LabelText(
