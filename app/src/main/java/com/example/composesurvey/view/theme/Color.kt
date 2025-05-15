@@ -11,6 +11,14 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 
+val DivergingStackedBarChartColors = listOf(
+    Color(0xFF2196F3), // Blue
+    Color(0xFF03A9F4), // Light Blue
+    Color(0xFF9E9E9E),  // Gray
+    Color(0xFFFF9800), // Orange
+    Color(0xFFFF5722), // Deep Orange
+)
+
 val GraphColors = listOf(
     Color(0xFFFFB6C1), // LightPink
     Color(0xFFFFEB3B), // Yellow

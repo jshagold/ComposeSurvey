@@ -22,9 +22,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.composesurvey.model.QuestionTypeUI
 import com.example.composesurvey.view.components.chart.pie.PieChart
 import com.example.composesurvey.view.components.chart.StackBarChart
+import com.example.composesurvey.view.components.chart.divergingstackedbar.DivergingStackedBarChart
 import com.example.composesurvey.view.components.chart.histogram.Histogram
 import com.example.composesurvey.view.state.SurveyStatisticsState
 import com.example.composesurvey.view.theme.GraphColors
+import com.example.composesurvey.view.theme.GraphColorsType2
 import com.example.composesurvey.viewmodel.SurveyStatisticsViewModel
 
 
@@ -76,7 +78,7 @@ fun StatisticsScreen(
                 }
 
                 QuestionTypeUI.SINGLE_CHOICE -> {
-                    // todo Single Choice - 막대그래프 or pie chart
+                    // Single Choice - 막대그래프 or pie chart
 
                     var pieSelectedIndex: MutableState<Int?> = remember { mutableStateOf(null) }
 
@@ -87,6 +89,7 @@ fun StatisticsScreen(
 
                     PieChart(
                         dataList = map.map { (k, v) -> Pair(k, v) },
+                        colorList = GraphColorsType2,
                         selectedDataIndex = pieSelectedIndex.value,
                         onClickPie = {
                             pieSelectedIndex.value = it
@@ -96,7 +99,7 @@ fun StatisticsScreen(
                 }
 
                 QuestionTypeUI.MULTIPLE_CHOICE -> {
-                    // todo multiple choice - 수평 누적 막대그래프 or 막대그래프
+                    // multiple choice - 수평 누적 막대그래프 or 막대그래프
                     Spacer(modifier = Modifier.size(50.dp))
                     Text(
                         text = "${question.id} ${question.question}"
@@ -105,13 +108,13 @@ fun StatisticsScreen(
                     StackBarChart(
                         dataList = map.map { (k, v) -> Pair(k, v) }.sortedByDescending { (k, v) -> v },
                         chartHeight = 100.dp,
-                        colorList = GraphColors,
+                        colorList = GraphColorsType2,
                         modifier = Modifier
                     )
                 }
 
                 QuestionTypeUI.SLIDER -> {
-                    // todo Slider - 히스토그램
+                    // Slider - 히스토그램
                     Spacer(modifier = Modifier.size(50.dp))
                     Text(
                         text = "${question.id} ${question.question}"
@@ -119,6 +122,7 @@ fun StatisticsScreen(
 
                     Histogram(
                         modifier = Modifier,
+                        candleColor = GraphColorsType2[0],
                         dataList = map,
                         min = question.min!!.toInt(),
                         max = question.max!!.toInt(),
@@ -126,10 +130,15 @@ fun StatisticsScreen(
                 }
 
                 QuestionTypeUI.LIKERT_SCALE -> {
-                    // todo Likert Scale - 수평 막대그래프, 누적 막대그래프
+                    // Likert Scale - 수평 막대그래프, 누적 막대그래프
                     Spacer(modifier = Modifier.size(50.dp))
                     Text(
                         text = "${question.id} ${question.question}"
+                    )
+
+                    DivergingStackedBarChart(
+                        modifier = Modifier,
+                        dataList = map.toSortedMap().map { (k, v) -> Pair(question.scaleList!![k.toInt()], v) }
                     )
                 }
             }

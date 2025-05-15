@@ -195,7 +195,13 @@ fun PieChart(
                 LabelText(
                     labelText = data.label,
                     labelColor = data.color,
-                    labelPadding = 10
+                    labelPadding = 10,
+                    modifier = if(index == selectedDataIndex) {
+                        Modifier.border(2.dp, Color.Blue, RoundedCornerShape(5.dp))
+                    } else {
+                        Modifier
+                    }
+
                 )
             }
         }
