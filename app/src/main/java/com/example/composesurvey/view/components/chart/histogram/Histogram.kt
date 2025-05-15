@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composesurvey.view.theme.GraphColors
-import com.example.composesurvey.view.theme.GraphColorsType2
 
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
