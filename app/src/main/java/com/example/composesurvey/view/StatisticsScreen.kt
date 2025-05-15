@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.composesurvey.model.QuestionTypeUI
 import com.example.composesurvey.view.components.chart.pie.PieChart
 import com.example.composesurvey.view.components.chart.StackBarChart
+import com.example.composesurvey.view.components.chart.histogram.Histogram
 import com.example.composesurvey.view.state.SurveyStatisticsState
 import com.example.composesurvey.view.theme.GraphColors
 import com.example.composesurvey.viewmodel.SurveyStatisticsViewModel
@@ -74,7 +75,7 @@ fun StatisticsScreen(
                     )
                 }
 
-                QuestionTypeUI.SINGLE_CHOICE, QuestionTypeUI.SLIDER -> {
+                QuestionTypeUI.SINGLE_CHOICE -> {
                     // todo Single Choice - 막대그래프 or pie chart
 
                     var pieSelectedIndex: MutableState<Int?> = remember { mutableStateOf(null) }
@@ -109,13 +110,20 @@ fun StatisticsScreen(
                     )
                 }
 
-//                QuestionTypeUI.SLIDER -> {
-//                    // todo Slider - 히스토그램
-//                    Spacer(modifier = Modifier.size(50.dp))
-//                    Text(
-//                        text = "${question.id} ${question.question}"
-//                    )
-//                }
+                QuestionTypeUI.SLIDER -> {
+                    // todo Slider - 히스토그램
+                    Spacer(modifier = Modifier.size(50.dp))
+                    Text(
+                        text = "${question.id} ${question.question}"
+                    )
+
+                    Histogram(
+                        modifier = Modifier,
+                        dataList = map,
+                        min = question.min!!.toInt(),
+                        max = question.max!!.toInt(),
+                    )
+                }
 
                 QuestionTypeUI.LIKERT_SCALE -> {
                     // todo Likert Scale - 수평 막대그래프, 누적 막대그래프
