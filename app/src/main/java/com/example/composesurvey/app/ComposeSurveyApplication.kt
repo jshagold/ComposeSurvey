@@ -1,4 +1,4 @@
-package com.example.composesurvey.view.app
+package com.example.composesurvey.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

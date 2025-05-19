@@ -9,7 +9,7 @@ import com.example.composesurvey.mapper.toDomain
 import com.example.composesurvey.mapper.toUI
 import com.example.composesurvey.model.AnswerUI
 import com.example.composesurvey.model.QuestionWithAnswerUI
-import com.example.composesurvey.view.error.ErrorCode
+import com.example.composesurvey.error.ErrorCode
 import com.example.composesurvey.view.state.SurveyCheckState
 import com.example.core.exception.FileException
 import com.example.core.exception.UnexpectedException

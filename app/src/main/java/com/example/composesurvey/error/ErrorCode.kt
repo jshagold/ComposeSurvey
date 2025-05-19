@@ -1,4 +1,4 @@
-package com.example.composesurvey.view.error
+package com.example.composesurvey.error
 
 enum class ErrorCode(val errorName: String, val code: Int) {
     NONE(errorName = "", code = -1),

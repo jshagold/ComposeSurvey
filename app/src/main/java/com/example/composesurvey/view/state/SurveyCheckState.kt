@@ -1,6 +1,6 @@
 package com.example.composesurvey.view.state
 
-import com.example.composesurvey.view.error.ErrorCode
+import com.example.composesurvey.error.ErrorCode
 import com.example.composesurvey.model.QuestionWithAnswerUI
 
 data class SurveyCheckState(

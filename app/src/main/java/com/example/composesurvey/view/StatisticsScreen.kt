@@ -58,7 +58,7 @@ fun StatisticsScreen(
 ) {
     val scrollState = rememberScrollState()
 
-
+    val answerCount = uiState.statisticsList.values.sumOf { it -> it.size }
 
 
     Column(
@@ -67,6 +67,10 @@ fun StatisticsScreen(
             .verticalScroll(scrollState)
             .padding(horizontal = 20.dp)
     ) {
+        Text(
+            text = "전체 설문 답변 수 : $answerCount"
+        )
+
 
         uiState.statisticsList.forEach { (question, map) ->
             when(question.type) {

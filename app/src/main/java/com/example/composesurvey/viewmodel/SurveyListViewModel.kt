@@ -1,12 +1,11 @@
 package com.example.composesurvey.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composesurvey.mapper.toUI
 import com.example.composesurvey.model.SurveyUI
-import com.example.composesurvey.view.error.ErrorCode
+import com.example.composesurvey.error.ErrorCode
 import com.example.composesurvey.view.state.SurveyListState
 import com.example.core.exception.FileException
 import com.example.core.exception.UnexpectedException

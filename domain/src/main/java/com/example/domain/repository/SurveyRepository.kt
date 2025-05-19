@@ -34,6 +34,4 @@ interface SurveyRepository {
 
     suspend fun getQuestionWithAnswerListBySurveyId(surveyId: Long): List<QuestionWithAnswer>
 
-
-
 }

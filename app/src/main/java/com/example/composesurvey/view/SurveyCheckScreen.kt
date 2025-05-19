@@ -19,7 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.composesurvey.R
@@ -86,7 +89,11 @@ fun SurveyCheckScreen(
             .background(White)
     ) {
         Text(
-            text = state.surveyTitle
+            text = state.surveyTitle,
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
         )
 
         state.questionNAnswerList.forEachIndexed { index, qNA ->
@@ -112,6 +119,7 @@ fun SurveyCheckScreen(
                             .padding(10.dp)
                     )
                 }
+
 
                 is AnswerUI.MultipleChoice -> {
                     QuestionMultipleChoice(
