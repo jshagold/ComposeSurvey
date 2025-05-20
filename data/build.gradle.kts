@@ -56,9 +56,12 @@ dependencies {
     // Room
     implementation(libs.room.ktx)
 
-    // JSON Kotlin Serialization
+1    // JSON Kotlin Serialization
     implementation(libs.kotlinx.serialization.json)
 
     // Napier Log
     implementation(libs.napier)
+
+    // Paging
+    implementation(libs.paging)
 }

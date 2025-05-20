@@ -79,4 +79,9 @@ dependencies {
 
     // Napier Log
     implementation(libs.napier)
+
+    // Paging
+    implementation(libs.paging)
+    implementation(libs.paging.compose)
+
 }
