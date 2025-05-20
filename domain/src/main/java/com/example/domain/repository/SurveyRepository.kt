@@ -1,11 +1,13 @@
 package com.example.domain.repository
 
+import androidx.paging.PagingData
 import com.example.core.result.Result
 import com.example.domain.model.Question
 import com.example.domain.model.QuestionWithAnswer
 import com.example.domain.model.Survey
 import com.example.domain.model.SurveyPreview
 import com.example.domain.model.SurveyResult
+import kotlinx.coroutines.flow.Flow
 
 interface SurveyRepository {
 
@@ -16,6 +18,8 @@ interface SurveyRepository {
     fun getSurveyTitleList(): List<Result<SurveyPreview>>
 
     suspend fun getSurveyList(): List<Result<Survey>>
+
+    fun getSurveyListByPage(pageSize: Int): Flow<PagingData<Survey>>
 
     suspend fun saveSurveyToDBFromFile(): Result<String>
 

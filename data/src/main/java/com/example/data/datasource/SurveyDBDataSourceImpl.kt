@@ -1,5 +1,8 @@
 package com.example.data.datasource
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.room.withTransaction
 import com.example.core.constants.SurveyJson
 import com.example.data.mapper.toData
@@ -13,7 +16,9 @@ import com.example.database.dao.AnswerDao
 import com.example.database.dao.QuestionDao
 import com.example.database.dao.SurveyDao
 import com.example.database.model.AnswerEntity
+import com.example.database.model.SurveyWithQuestions
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject
@@ -47,6 +52,32 @@ class SurveyDBDataSourceImpl @Inject constructor(
                 questions = surveyWithQuestionEntity.questions.map { it.toData() }
             )
         }
+    }
+
+    override fun getSurveyListByPage(pageSize: Int): Flow<PagingData<Survey>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = pageSize,
+                enablePlaceholders = false,
+            ),
+            pagingSourceFactory = { SurveyPagingSource(surveyDao) }
+        ).flow
+    }
+
+    // Room-paging을 사용한 경우
+    fun getSurveyListByPageAnother(pageSize: Int): Flow<PagingData<SurveyWithQuestions>> {
+
+        val pagingSourceFactory = {
+            surveyDao.getSurveyWithQuestionsListAsPageSource()
+        }
+
+        return Pager(
+            config = PagingConfig(
+                pageSize = pageSize,
+                enablePlaceholders = false,
+            ),
+            pagingSourceFactory = pagingSourceFactory
+        ).flow
     }
 
     override suspend fun isExistSurvey(title: String): Boolean {

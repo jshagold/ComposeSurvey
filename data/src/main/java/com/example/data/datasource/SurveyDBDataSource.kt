@@ -1,15 +1,19 @@
 package com.example.data.datasource
 
+import androidx.paging.PagingData
 import com.example.data.model.Answer
 import com.example.data.model.Question
 import com.example.data.model.QuestionWithAnswer
 import com.example.data.model.Survey
+import kotlinx.coroutines.flow.Flow
 
 interface SurveyDBDataSource {
 
     suspend fun getSurvey(surveyId: Long): Survey?
 
     suspend fun getSurveyList(): List<Survey>
+
+    fun getSurveyListByPage(pageSize: Int): Flow<PagingData<Survey>>
 
     suspend fun isExistSurvey(title: String): Boolean
 

@@ -1,5 +1,7 @@
 package com.example.data.repository
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.example.core.exception.FileException
 import com.example.core.exception.UnexpectedException
 import com.example.core.result.Result
@@ -16,6 +18,8 @@ import com.example.domain.model.Survey
 import com.example.domain.model.SurveyPreview
 import com.example.domain.model.SurveyResult
 import com.example.domain.repository.SurveyRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import com.example.data.model.Survey as SurveyData
 import javax.inject.Inject
 import kotlin.collections.map
@@ -39,6 +43,14 @@ class SurveyRepositoryImpl @Inject constructor(
     override suspend fun getSurveyList(): List<Result<Survey>> {
         return surveyDBDataSource.getSurveyList().map { survey: SurveyData ->
             Result.Success(survey.toDomain())
+        }
+    }
+
+    override fun getSurveyListByPage(pageSize: Int): Flow<PagingData<Survey>> {
+        return surveyDBDataSource.getSurveyListByPage(pageSize).map { pagingData ->
+            pagingData.map { survey ->
+                survey.toDomain()
+            }
         }
     }
 

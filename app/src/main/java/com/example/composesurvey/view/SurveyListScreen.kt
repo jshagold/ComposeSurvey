@@ -22,17 +22,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.composesurvey.model.SurveyUI
 import com.example.composesurvey.view.components.extension.noRippleClickable
 import com.example.composesurvey.view.state.SurveyListState
 import com.example.composesurvey.viewmodel.SurveyListViewModel
 import com.example.core.result.Result
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 
 
 @Preview(showBackground = true, backgroundColor = 0xffffffff)
 @Composable
 fun PreviewSurveyListScreen() {
+    val fakeData = List(10) {
+        SurveyUI(
+            id = it.toLong(),
+            title = it.toString(),
+            description = null
+        )
+    }
+    val pagingData = PagingData.from(fakeData)
+    val fakeDataFlow = MutableStateFlow(pagingData).collectAsLazyPagingItems()
+
+
     SurveyListScreen(
-        uiState = SurveyListState()
+        uiState = SurveyListState(),
+        pagingSurveyList = fakeDataFlow
     )
 }
 
@@ -45,11 +63,13 @@ fun SurveyListRoute(
 ) {
 
     val uiState by viewModel.surveyListState.collectAsStateWithLifecycle()
+    val pagingSurveyList = viewModel.pagingSurveyList.collectAsLazyPagingItems()
 
     SurveyListScreen(
         uiState = uiState,
         navigateToSurveyCheck = navigateToSurveyCheck,
-        modifier = modifier
+        modifier = modifier,
+        pagingSurveyList = pagingSurveyList
     )
 }
 
@@ -58,6 +78,7 @@ fun SurveyListRoute(
 fun SurveyListScreen(
     modifier: Modifier = Modifier,
     uiState: SurveyListState,
+    pagingSurveyList: LazyPagingItems<SurveyUI>,
     navigateToSurveyCheck: (surveyId: Long) -> Unit = {},
 ) {
     LazyColumn(
@@ -71,6 +92,23 @@ fun SurveyListScreen(
             Text(
                 text = "Survey List"
             )
+        }
+
+        items(pagingSurveyList.itemCount) { index ->
+            pagingSurveyList[index]?.let {
+                Text(
+                    text = it.title,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, Black, RoundedCornerShape(10.dp))
+                        .noRippleClickable {
+//                            navigateToSurveyCheck(it.id)
+                        }
+                        .padding(10.dp)
+
+                )
+            }
         }
 
         items(uiState.surveyList) { resultTitle ->
